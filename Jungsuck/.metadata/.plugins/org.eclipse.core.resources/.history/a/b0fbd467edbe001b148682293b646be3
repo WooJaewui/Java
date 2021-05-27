@@ -1,0 +1,15 @@
+package _ch02;
+
+public class Ex2_1 {
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		// alt + shift + A
+		System.out.println("Hello");
+		System.out.println(3+5);
+		System.out.println(6*10);
+		System.out.println(4/2);
+		System.out.println(10-3);
+		int A = 0;
+		
+	}
+}

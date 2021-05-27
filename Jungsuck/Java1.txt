@@ -1,0 +1,178 @@
+# Java
+
+Java    programing Language.
+        컴퓨터 application을 만드는데 사용한다.
+        
+
+# Java 사용.
+
+PC application              
+Web application             
+mobile application          Android
+Big Data                    hadoop
+Game, 과학, 소형기기 등      마인크래프트
+
+
+# Java를 해야 되는 이유
+
+다양한 분야에서 활발히 사용.
+20년 동안 programing Language에서 1~2위.
+배우기 쉽고, 풍부한 학습자료. (Python보다는 어렵지만, 컴퓨터에 대한 이해는 더 높다)
+모던 프로그래밍 언어. (객체지향 + 함수형)
+취업에 유리하다. (실무에서 제일 많이 사용)
+
+
+# Java의 역사.
+
+JDK => J2SE => Java SE 8
+
+SE Standard Edition.        개인.
+ME Micro Edition.           소형기기.
+EE Enterprise Edition.      기업.
+
+
+# Java의 특징.
+
+배우기 쉬운 객체지향 언어.               프로그래밍 언어 + 객체지향개념 (C++, Python, Java, JS...)
+자동 메모리 관리.                       Gavage Collector (GC)
+멀티 쓰레드를 지원.                     여러가지 일을 같이 처리할 수 있다.
+풍부한 라이브러리로 쉽게 개발가능.
+운영체제에 독립적.                       ex) C언어로 만들어진 program은 Window에서 실행이되면, 리눅스는 안된다. (수정을 해야됨)
+                                       Python은 독립적이다.
+
+
+# JVM
+
+Java Virtual Machine                   소프트웨어로 만들어진 가상 컴퓨터이다. 
+                                       Program과 OS사이에서 실행가는하도록 도와준다.
+                                       JVM만 깔려있으면 모든 OS에서 사용가능하다. (window용, Linux용...)
+
+
+# JDK
+
+Java Development Kit        자발개발도구. 프로그래밍 하려면 설치해야된다.
+
+https://www.oracle.com/kr/java/technologies/javase/javase-jdk8-downloads.html
+
+
+# Java API 문서.
+
+Java API 문서       Java API가 제공하는 기능에 대한 상세한 정보 제공. (사전역할)
+                    PACKAGE     관련된 CLASS를 묶어놓은 것.
+                    CLASS       
+                    내용         
+
+https://www.oracle.com/java/technologies/javase-jdk8-doc-downloads.html
+
+
+# Java class 생성, 실행하기.
+
+1. File 생성.                   File_Name.java     시스템 => 고급설정 => 환경변수 => Path => JDK의 bin 폴더 추가.
+2. Coding하기.                  class Hello {
+                                        public static void main(String[] args) {
+                                                System.out.println("Hello, world.");
+                                        }
+                                }
+
+3. Compile하기.                 cmd     javac File_Name.java   =>  Hello.class가 생성됨.
+4. class 실행하기.              cmd     java Hello             => Hello, world. 가 실행됨.
+
+
+# Java 관련 용어.
+
+javac.exe       Java compiler. 사람의 작성한 code를 기계어로 번역한다. 번역 후 sauce파일(*.java), class파일(*.class)로 변환.
+java.exe        Java interpreter. Java program(class file)을 실행한다.
+class           Java Program의 단위, 1개 이상의 class가 모여서 Program이 된다.
+main method     Java program의 시작점, 이 method 없이 실행불가.
+                mian method안에 첫 문장부터 순서대로 실행된다.
+
+
+# Eclipse 설치하기.
+
+Eclipse IDE for Java Developers
+workspace는 eclipse가 깔려있는 하위 directory에 넣지 않는다. (버전 업그레이드시 지워질 수 있다)
+
+https://www.eclipse.org/downloads/packages/
+
+
+# Eclipse.
+
+Build Automatically     체크되어 있으면 Sauce파일을 저장할때 자동으로 compile된다. 
+bin directory           class가 저장된다.
+src directory           java file들이 저장된다.
+.classpath, .project    Java project를 생성하면 자동으로 생기는 file으로 건들지 않는다.
+File 이름명 특수문자      *  : 저장되지 않았다.    X  : Error가 있다.
+
+
+# Eclipse Build.
+
+project에서 설정가능.
+Build                   Sauce file로부터 프로그램을 만들어 내는 전 과정.
+Build all               workspace의 모든 프로젝트를 build.
+build project           현재 project를 build. (변경된 sauce file만 새로 compile)
+build Automatically     sauce가 저장되면 자동으로 compile
+clean                   이전 build의 정보를 모두 삭제 (모든 sauce file을 새로 compile)
+
+
+# Eclipse 단축키.
+
+ctrl + shift + L        단축키 전체 목록보기.
+ctrl + + or -           word 크기 조절.
+ctrl + D                한 줄 삭제.
+ctrl + alt + down       한 줄 복사.
+alt + shift + A         여러 정보 수정.
+alt + up or down        한 줄 띄어넘기.
+tab                     들여쓰기.
+shift + tab             내어쓰기.
+ctrl + i                자동으로 들여쓰기 맞춰줌.
+ctrl + /                comment 주석처리.(toggle) /* comment */
+ctrl + space            자동완성.
+
+
+# Eclipse content assist (자동완성).
+
+ctrl + space            미리 만들어진 template 자동완성.
+
+window => preferance => Java => Editor => Content Assist => Auto Activation
+
+Auto activation delay                           delay값 설정.
+Auto activation triggers for java               .qwert      API를 작성하다보면 그에 맞는 API를 찾아준다.
+
+
+# Eclipse File 옮기기.
+
+import          Package View에서 마우스 오른쪽 클릭 => import => General => Existing Project into Workspace
+                기존에 있는 project를 workspace로 가져온다. next클릭 후 추가 설정하기.
+export          Package View에서 마우스 오른쪽 클릭 => import => General => archive file
+                workspace안에 있는 project를 Eclipse 밖으로 내보낸다. 
+
+
+# Java 출력.
+
+print()                 출력 후에 줄바꿈을 안함.
+println()               출력 후에 줄바꿈을 한다.
+print("3+3")            "3+3"는 string으로 인식해서 출력한다. 3+3
+print(3+3)              3+3은 int로 인식해서 출력한다. 6
+
+
+# Java variable 변수.
+
+variable                하나의 값을 저장할 수 있는 메모리 공간.
+                        원래 메모리는 byte단위로 숫자를 활용해서 저장하고 메모리주소로 그 data를 기억하는데,
+                        사람들이 보기에는 숫자로 기억하는 것보다 이름으로 저장하는 것이 더 편리해서 생긴 것이 변수이다.
+
+variable 선언           값을 저장할 공간을 마련하기 위해서 선언한다.
+
+선언방법                변수타입 변수이름;   ex) int age;      // 정수타입의 변수 age를 선언.
+
+variable 초기화         변수에 처음으로 값을 저장하는 것.
+
+variable 저장.           int age;                        // 변수 선언.
+                         age = 25;                      // 변수 대입.
+                         int age = 25;                  두 과정을 한 번에 한다.  
+                         int x = 0, y = 5;              두 개의 변수를 한 번에 선언할 수 있다. 
+
+
+variable의 종류         class, instance, local
+
+variable 값 출력하기    print(variable);
