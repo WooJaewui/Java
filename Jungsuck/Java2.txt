@@ -1,0 +1,259 @@
+# variable(변수)의 type.
+
+int age = 25;       O (25가 정수이기 때문에)
+    age = 3.14;     X (3.14는 실수이기 때문에)
+
+variable tpye 특징.
+
+변수의 type은 저장할 값의 type에 의해 결정된다. 
+변수의 type과 값의 type이 일치하지 않으면 선언되지 않는다.
+
+
+# data(값)의 type. 
+
+data의 기본 tpye 8가지.
+
+char                        문자
+byte, shor, int, long       정수
+float, double               실수
+boolean                     참,거짓.
+
+
+# 변수, 상수, 리터럴
+
+variable 변수           하나의 값을 저장하기 위한 공간. 변경이 가능하다.  ex) int A = 30;
+constant 상수           한 번만 값을 저장 가능한 변수. 변경이 불가능하다. ex) final int A = 50;
+literal  기존의상수      그 자체로 값을 의미하는 것. ex) 100,200,"Hello"
+
+final 후에는 변수의 값을 변경하는 것이 불가능하다.
+지역변수는 초기화를 꼭 해줘야된다.
+
+
+# literal의 type.
+
+논리형      false, ture
+정수형      123, 0b01010, 077, 100L             접미사 : L(Long) 숫자 1과 혼동되기 때문에 대문자로 사용한다.
+실수형      3.14, 3.0e8, 1.4f                   접미사 : f(float), d(double) f만 사용하고, 안쓴 것을 d라고 구분한다.                               
+문자형      'A', '1', '\n'                      짧은 문자
+문자열      "ABC", "world", "B"                 큰 문자. 짧은 문자도 문자열로 표현 가능하다.
+
+
+# 정수형 type.
+
+byte     8bit      -127~127까지 표현가능.
+short    16bit     -32768~32767까지 표현가능.
+int      32bit     -20억~20억. 접두사를 통해 8진수 16진수까지 표현 가능. ( 0b = 2진수, 0 = 8진수, 0x = 16진수 ) 
+long     64bit     -800경~800경. 접미사 L을 붙인다. ex) long a = 10_000_000_000L // 긴 숫자는 3자리씩 끊어 쓸 수 있다.
+
+
+# 실수형 type.
+
+float     32bit     7자리까지 표현가능.     ex) float 3.14f;
+double    64bit     15자리까지 표현가능.    ex) double 3.14d; 생략가능. 3.14; // 좀 더 정확한 값을 구할 수 있다.
+
+둘다 floating point이다. 접미사 f는 무조건 사용한다.
+ex) 1e3 // e3은 10의 3승을 의미하고, e는 실수형에만 사용한다. 1000f
+
+
+# variable과 literal의 type.
+
+변수범위 < 리터럴인 경우 사용 불가능하다. ex) byte a = 23048; // error
+
+
+# 문자와 문자열.
+
+char ch = 'A';          success.
+char ch = 'ab';         error.
+char ch = '';           error.
+String s = "ABC";       success.     string은 class인데, data type으로 사용가능하다.
+String s = "";          success.
+String s = "a" + "b"    success.     "ab"
+
+숫자를 문자열로 바꾸는 방법.
+
+"" + 7 => "7"           빈 문자열 + 숫자 => 문자열.
+"" + 7 + 7 => "77"      
+7 + 7 + "" => "14"      
+
+문자열과 숫자를 더할때는 순서를 중요하게 생각해야 된다.
+
+
+# 두 변수의 값 교환하기.
+
+x,y의 값을 서로 바꾸려면 임시로 data를 저장할 수 있는 임시저장장소가 필요하다.
+
+ex) int x = 10, y = 20;
+    int tmp;
+
+    tem = x;
+    x = y;
+    y = tem;
+
+
+# Data Type의 기본형과 참조형.
+
+Primitive type 기본형       오직 8개 Boolean, char, byte, short, int, Long, float, double.
+                            실제 값을 저장한다.
+
+Referance type 참조형       기본형을 제외한 나머지. String, System, Date 등
+                           우리 마음대로 추가 할 수 있어서 무한대라고 할 수 있다.
+                           메모리 주소를 저장한다. (4 byte 또는 8 byte)
+                           32bit JVM 4byte = 40억.       수학적 계산 4GB        실제사용 가능한 범위 2GB.
+                           64bit JVM 8byte = 160경 byte. 수학적 계산 1600만TB   실제사용 가능한 범위 1TB.
+                           객체의 주소를 저장.
+                           ex) Date today;               참조형 변수 todat를 선언.
+                               today = new Date();       today에 객체의 주소를 저장.
+                               추후에 다시 공부.
+
+
+# 기본형에 대해 자세히 알기.
+
+Boolean 논리형      true, false중 하나를 값으면 갖으며, 조건식과 논리적 계산에 사용된다.
+Char 문자형         문자를 저장하는데 사용되며, 변수 당 하나의 문자만을 저장할 수 있다.
+                    여러문자를 사용하려면 String 참조형 data type을 사용해야된다.
+정수형              정수 값을 저장하는데 사용된다. 주로 사용하는 것은 int, long이다.
+                    byte 이진 데이터를 다루는데 사용되며,
+                    shor는 C언어와의 호환을 위해 추가되었다. 거의 안쓰인다.
+실수형              실수 값을 저장하는데 사용된다. float, double이 있다.
+
+
+# 기본형의 종류별 크기.
+
+논리형      1byte. True와 False밖에 없다. 1bit만으로 되지만 최소단위가 1byte이기 때문에 1byte를 사용한다.
+문자형      2byte. 문자 표현방식 유니코드가 2byte이기 때문에 문자형은 2byte를 사용한다.
+정수형      byte = 1byte, short = 2byte, int = 4byte, long = 8byte.
+실수형      float = 4byte, double = 8byte. double이 float보다 정밀성이 2배 높다.
+
+
+# 기본형 표현범위.
+
+1bit = 0과 1 2가지를 표현.    0~1   2가지
+1byte = 8bit 2**8가지를 표현. 0~255 256가지. 
+nbit = 2**n가지를 표현.
+부호있는 숫자는 -도 생각해야되기 때문에 1byte = -128~127까지 256가지가 된다.
+부호 bit는 sign bit가 부호를 0(양수), 1(음수)로 표현해준다.
+
+
+# 부호있는 정수 설명.
+
+1byte = 2**8        일반적인 1byte data 저장. 0 ~ (2**8)-1 256가지
+1byte = 2**7        1bit를 sign bit 부호를 나타내는데 사용해서 n-1을 한다. -2**7 ~ (2**7)-1 256가지
+
+결국 갯수는 똑같다.
+
+
+# 부호있는 실수 설명.
+
+부호, 지수, 가수    지수부분과 가수부분으로 구분해서 사용하기 때문에 정수보다 더 많은 수를 표현할 수 있다.
+                   근사값을 구하는 방식임으로 정밀도가 중요하다. 정밀도는 가수 부분의 자리수에 영향을 받는다.
+
+float           부호 : 1bit,  지수 : 8bit,   가수 : 23bit   e7<2**24<e8  오차없는 자리수 7자리.
+double          부호 : 1bit,  지수 : 11bit,  가수 : 52bit   float*2      오차없는 자리수 15자리.
+
+float로 표현이 가능한 숫자라도해도, 정확한 값을 구해야 될때는 double을 사용해야된다. (정밀도)
+그래서 실수의 값은 double이 가장 많이 사용된다.
+
+
+# 출력하기.
+
+println()의 단점        출력형식 지정불가. ex) System.out.println(10/3.0); 3.33333333333.....
+                        10진수로만 출력된다. ex) println(0x1A); 26
+
+printf()                println의 단점을 보완하기 위해 사용한다.
+                        println()의 자동줄바꿈이 안되기 때문에 %n or \n을 사용해서 줄바꿈 해줘야된다.
+                        %n : os상관없이 줄바꿈이 된다. \n : os에 영향이 있다.
+
+
+지시자 Formatter
+
+%b          boolean 형식으로 출력.
+%d          10진(decimal) 정수의 형식으로 출력.
+%o          8진(octal) 정수의 형식으로 출력.
+%x, $X      16진(hexa-decimal) 정수의 형식으로 출력.
+%f          부동소수점(floating-point) 형식으로 출력.
+%e, %E      지수(exponent) 표현식의 형식으로 출력.
+%char       문자(character) 형식으로 출력.
+%s          문자열(String) 형식으로 출력.
+%g          %f와 %e중에 더 간략한 형식을 선택해서 출력.
+
+
+# prontf()의 지시자.
+
+일반적으로 출력될때는 접두사가 붙지 않는다.
+
+System.out.printf("%d", 15);                                15      10진수.
+System.out.printf("%o", 15);                                17      8진수.
+System.out.printf("%x", 15);                                f       16진수.
+System.out.printf("%s", Integer.toBinaryString(15));        1111    2진수.
+
+접두사를 같이 출력하려면 %#을 붙여준다.
+
+System.out.printf("%#d", 15);                                15        10진수.
+System.out.printf("%#o", 15);                                017       8진수.
+System.out.printf("%#x", 15);                                0xf       16진수.
+
+실수를 표현하는 방법.
+
+float f = 123.4567890f;
+System.out.printf("%f", f);               123.456787       앞에서부터 7자리만 정확.
+System.out.printf("%e", f);               1.2345678e+02    반올림해서 보여준다. 실제 data는 반올림 X.
+System.out.printf("%g", 123.456789);      123.457          간략한 형식을 선택해서 보여준다.
+System.out.printf("%g", 0.00000001);      1.000000e-8      
+
+=> 실수의 숫자를 표현할때 일반적으로 %f를 사용하고, 0이 많을경우 %e를 사용한다.
+
+원하는 자리수만큼 숫자를 표현.
+
+System.out.printf("[%5d]%n", 1234567);      [1234567]       5자리만 설정해도 7자리 data모두 저장된다.
+System.out.printf("[%5d]%n", 10);           [   10]
+System.out.printf("[%-5d]$n", 10);          [10   ]
+System.out.printf("[%05d]$n", 10);          [00010]
+System.out.printf("d=%14.10f%n", d)         14 = 소수점을 포함한 총 자리수, 10 = 소수점 자리수.
+                                            정수자리는 공백으로 채우고, 소수점은 0으로 채운다.
+
+문자를 자리수만큼 표현.
+
+System.out.printf("[%s]%n", url);            [url]
+System.out.printf("[%20s]%n", url);          [   url]
+System.out.printf("[%-20s]%n", url);         [url   ]
+System.out.printf("[%.8s]%n", url);          [ur]      url stirng중에 앞에서부터 8글자만 표현된다.
+
+
+# Scanner class.
+
+Scanner     화면으로부터 데이터를 입력받는 기능을 제공하는 클래스.
+
+
+# Scanner 사용법.
+
+1. import문 추가.               ex) import java.util.*;
+2. Scanner 객체의 생성.         ex) Scanner scanner = new Scanner(System.in);  => System.in 화면입력.
+3. Scanner 객체를 사용.         ex) int num = scanner.nextInt();               => 화면에서 입력받은 정수를 num에 저장.
+                                   string input = scanner.nextLine();         => 화면에서 입력받은 내용을 input에 저장.
+                                   int num = Integer.parseInt(input);         => 문자열을 숫자로 변환.
+
+
+# 계수기 counter
+
+overflow        counter가 셀 수 있는 값을 넘어서는 것. 10진수 0001 ~ 9999 +1 => 0000 , 2진수 0000 ~ 1111 + 1=> 0000
+                최대값 + 1 => 최소값.    //     최소값 - 1 => 최대값.
+                결국 순환한다.
+
+부호없는 정수에서 overflow.
+
+1byte   0~15    15 + 1 => 0     //    0 - 1 => 15
+
+부호있는 정수에서 overflow.
+
+1byte   -8~7    7 + 1  => -8    //   -8 - 1 => 7
+
+
+# n 비트로 표현할 수 있는 정수의 갯수.
+
+부호없는 정수.
+
+0 ~ (2**n)-1
+
+부호 있는 정수.
+
+(2**n-1) ~ (2**n-1)-1
