@@ -1,0 +1,385 @@
+# 스택 (stack)
+
+스택(stack)		밑에 막힌 상자. 위에 차곡차곡 쌓인다.
+				저장할때 data1, data2, data3이 차곡차곡 쌓이고
+				제거할때 date3, date2, date1 순으로 제거 할 수 있다.
+
+
+# 호출스택 (call stack)
+
+호출스택 		메소드 수행에 필요한 메모리가 제공되는 공간.
+			메소드가 호출되면 호출스택에 메모리 할당, 메소드가 종료되면 해제된다.
+			아래있는 메소드가 위에 있는 메소드를 호출한 것이다.
+			맨 위에 메소드만 실행중이고, 아래있는 메소드는 이미 실행해서 다음 메소드를 호출한 상태로 대기중이다.
+			한 개의 쓰레드에서는 한 개의 메소드만 실행된다.
+			
+ex) class Ex6_5 {
+		public static void main(String[] args) {
+		
+			System.out.println("Hello");
+
+		}
+}
+
+비어있음 => main method 호출 => println method 호출 => prinln method 제거 => main method 제거 => 비어있음 => 종료
+
+
+# 매개변수의 type.
+
+기본형 매개변수		변수의 값을 읽기만 할 수 있다. (read only)
+참조형 매개변수		변수의 값을 읽고 변경할 수 있다.(read & write)
+
+기본형 매개변수 예시)
+
+class Data2 {int x};
+
+class main{
+	static void main(String[] args){
+		
+		Data2 d = new Data2();
+		d.x = 10;
+ 
+		change(d.x);
+	}
+    static void change(int x){
+        	
+    	x = 100;
+    	System.out.println(x);			
+    }
+}
+
+매개변수의 값 x를 바꿔도 d.x의 값은 변하지않는다. (읽기만 가능하다)
+
+참조형 매개변수 예시)
+
+class Data2 {int x};
+
+class main{
+	static void main(String[] args){
+	
+		Data2 d = new Data2();
+		d.x = 10;
+	
+		change(d);								객체를 대입한다.
+	
+	}
+	
+	static void chagne(Data2 d){				참조변수를 매개변수로 지정한다.
+	
+		d.x = 1000;
+		System.out.println(d.x);				
+	
+	}
+}
+
+매개변수에 참조형변수를 사용하면 d.x의 값을 바꿀 수 있다.		
+메소드에 static을 하는 이유는 CV는 객체생성없이 호출가능하기 때문이다.
+
+
+# Static method와 Instance method
+
+Static method			class method라고도 불린다.
+						객체 생성없이 호출 가능하다.
+						클래스이름.메소드이름();으로 호출한다.						ex) Math.random();
+						인스턴스 멤버(iv, im)와 관련없는 작업을 하는 메소드.
+						메소드 내에서 인스턴스 변수(iv) 사용불가.
+						
+Instance method			인스턴스객체 생성 후, 참조변수.메소드이름();으로 호출한다.		ex) d.x();
+						인스턴스 멤버(iv, im)와 관련된 작업을 하는 메소드.
+						메소드 내에서 인스턴스 변수 사용가능.
+
+ex)
+class MyMath{
+	
+	long a, b;
+
+	long add() {								매개변수로 따로 지정하지 않아도 된다.
+	
+		return a + b;							instance method는 iv를 사용한다.
+		
+	}
+
+	static long add(long a, long b){			static method는 lv를 사용한다.
+	
+		return a + b;
+	
+	}
+}
+
+
+# static과 instance method의 차이.
+
+static method에서 iv사용하지 못하는 이유.
+iv는 인스턴스가 생성되야 사용가능하고, static method는 class가 생성되면 바로 사용할 수 있기 때문이다.
+
+instance method에서 iv를 매개변수로 받지 않는이유.
+iv는 클래스 전 영역에서 사용가능한 variable이기 때문에 따로 매개변수로 넣지 않아도 사용가능하다.
+
+=> 	instance 메소드에서 a.method() 괄호안에 아무것도 안 넣는 이유는 매개변수를 따로 넣지 않아도 되기 때문이다. (iv를 사용한다고 생각가능)
+	static method에서 Math.random() 괄호안에 무언가를 넣어 줘야 할 가능성이 크다. 
+	매개변수로 local 변수를 받아서 값을 반환하는데 사용하거나, method 내에서 local 변수를 생성해서 사용한다.
+
+
+# 오버로딩 overloading.
+
+오버로딩 	한 클래스 안에 같은 이름의 메소드를 여러개 정의하는 것.
+		매개변수는 다르지만 같은 의미의 기능을 수행하는 것.
+		
+ex) void println(int x);				println(123);
+	void println(boolean x);			println(x<5);
+	void println(char x);				println("a");
+	...
+	
+	
+# 오버로딩 성립조건.
+
+1. 메소드 이름이 같아야된다.
+2. 매개변수의 개수 또는 타입이 달라야한다.			매개변수가 같으면 중복정의이다. already defined error
+3. 반환 타입은 영향없다.
+
+ex) long add(int a , long b) { return a + b; }
+	long add(long a, int b) { return a + b; }
+
+add(3,3)을 하면 1,2번 모두 가능해서 error가 발생한다. ambiguous error
+
+
+# 연산자 오버로딩.
+
++     	1. 부호.
+		2. 덧셈.
+		3. 문자열결합.
+		
+Java에서는 새로운 연산자를 만들거나 할 수는 없다. C++에는 가능한 것 같다.
+
+
+# 실행순서.
+
+System.out.prinln(MyMath.add(3,3));
+
+1. MyMathadd(3,3)을 실행한다.
+2. println을 실행한다.
+
+
+# 생성자 constructor.
+
+생성자			인스턴스가 생성될 때마다 호출되는 인스턴스 초기화 메소드.
+				인스턴스 생성시 수행할 작업에 사용.
+				객체에 꼭 들어가야 되는 정보(변수)를 쉽게 초기화하기 위해 사용한다.
+인스턴스초기화		iv 초기화.
+
+Time t = new Time();      		기본생성자 Time() 호출.
+t.hour = 12;
+t.minute = 34;
+t.second = 56;
+
+Time t = new Time(12,34,56);	생성자 Time() 호출.
+
+
+# 생성자의 특징.
+
+1. 생성자의 이름이 클래스 이름과 같아야 한다.
+2. 리턴값이 없다. (항상 리턴값이 없어서 void를 안 붙임)
+3. 모든 클래스는 반드시 생성자를 1개이상 가져야 한다. (생성자가 없으면 compiler가 기본생성자를 만들어준다)
+
+
+# 기본생성자.
+
+기본생성자		매개변수가 없는 생성자.
+			생성자가 하나도 없을 때만, 컴파일러가 자동 추가해준다. (생성자를 만들면 기본 생성자를 꼭 넣어주자!)
+			클래스이름(){}			
+
+
+# 매개변수가 있는 생성자.
+
+매개변수가 있는 생성자		변수 대입을 매개변수를 통해 클래스 안에서 할 수 있도록 만들어준다.
+					객체를 만들때 꼭 필요한 변수들을 생성자를 통해 쉽게 만들 수 있도록 도와준다.
+					
+class Car{
+	String color;
+	String gearType;
+
+	Car(){};
+	Car(String c, String g){
+		
+		color = c;
+		gearType = g;
+	}
+}
+
+
+# 생성자 this()
+
+this		같은 클래스 안에 생성자를 호출할때 this를 쓴다.
+			생성자의 첫번째 문장에서만 호출이 가능하다.
+			this를 통해 코드의 중복을 제거하기 위해 사용한다.
+			
+class Car2{
+	String color;
+	String gearType;
+	
+	Car2(){
+		this("white","auto");			매개변수 2개인 경우의 생성자를 호출한다.
+	}
+	Car2(String c){
+		this(c,"auto");					매개변수 2개인 경우의 생성자를 호출한다.
+	}
+	Car(String c, String g){			매개변수 2개인 경우의 생성자.
+		color = c;
+		gearType = g;
+	}
+}
+
+
+# 참조변수 this
+
+this		인스턴스 자신을 가리키는 참조변수.
+			인스턴스 메소드(생성자포함)에서 사용가능하다.
+			선언하지 않아도 사용가능하다.
+			지역변수와 인스턴스 변수를 구별할때 많이 사용한다. (다른방법으로도 사용한다)
+			메소드를 생성할때 인스턴스변수와 메소드의 지역변수가 같을때 구별하기 위해 사용한다.
+			인스턴스변수와 메소드의 지역변수가 다르면 this를 생략가능하다. ex) color = c;
+			static 메소드에서는 this를 사용할 수 없다.
+			생성자 this()와 전혀 다른것이다. 구분해서 생각하자.
+			
+Car(String color, String gearType, int door){
+
+	this.color = color;	
+	this.gearType = gearType;
+	this.door = door;
+
+}
+
+
+# this와 this()
+
+this 		인스턴스 자신을 가리키는 참조변수, 인스턴스의 주소가 저장되어 있다.
+			모든 인스턴스메소드에 지역변수로 숨겨진 채로 존재한다.
+			선언하지 않아도 사용가능하다.
+		
+this()		생성자. 같은 클래스의 다른 생성자를 호출할 때 사용한다.		
+
+
+# 변수의 초기화.
+
+지역변수 			지역변수는 수동 초기화 해야됨. (사용전 꼭)
+				지역변수는 초기값이 존재하지 않는다.
+				stack의 효율성을 위해서 직접 대입하지 않으면 초기화되지 않는다.
+
+인스턴스변수		인스턴스변수는 자동 초기화한다. (boolean = false, int = 0, String = null ... )
+				
+
+# 멤버변수의 초기화.
+
+멤버변수 		인스턴스변수 + 클래스변수.
+
+명시적 초기화.
+
+ex) int door = 4;					기본형 변수의 초기화.
+	Engine e = new Engine();		참조형 변수의 초기화. 객체를 생성해야된다.
+
+	Engine e; 						참조형 변수는 초기값 초기화가 없다.
+
+초기화블럭.
+
+인스턴스 초기화 블럭 		{}			복잡한 초기화에 여러문장을 넣어서 초기화한다.
+클래스 초기화 블럭		static{}	복잡한 초기화에 여러문장을 넣어서 초기화한다.
+
+생성자.
+
+인스턴스초기화						복잡한 초기화에 여러문장을 넣어서 초기화한다.
+
+
+# CV, IV 초기화 정리.
+
+1. 자동초기화 ex) int = 0, String = null, boolean = false...
+2. 간단초기화 ex) int a = 10; 
+3. 복잡초기화 ex) cv = static {}, iv = 생성자, {}
+
+
+# 생성자 (iv초기화) 예시.
+
+class StaticBlockTest{
+
+	static int[] arr = new int[10];
+
+	static {
+		for(int i=0; i<arr.length; i++){
+		
+			arr[i] = (int)(Math.random()*10)+1;
+		}
+	
+	}
+}
+
+
+# 멤버변수의 초기화.
+
+클래스변수의 초기화시점 		클래스가 처음 로딩될 때 단 한 번. (메모리에 올라갈때)
+인스턴스변수의 초기화시점		인스턴스객체가 생성될때마다. (대입하지않으면 초기값을 갖는다)
+
+자동초기화		int a;	 			변수를 선언하면 자동으로 초기값으로 a = 0으로 초기화된다.
+간단초기화		int a = 10;			변수에 값을 대입하여 초기화한다.
+
+복잡초기화		cv)
+			static int a = 1	간단초기화 과정을 실행한다.
+			static {내용.}		static {}안에 초기화내용을 적어서 초기화시킨다.
+			
+			iv)
+			int a = 10;			간단초기화 과정을 실행한다.
+			{ a = 20};			참조변수에 새로운 값을 초기화한다.			
+
+
+# 클래스의 관계
+
+1. 상속.
+2. 포함.
+3. etc (세부적으로 나눈다면)
+
+# 상속 inheritance
+
+상속 		기존의 클래스로 새로운 클래스를 작성하는 것. (코드의 재사용)
+		두 클래스를 부모와 자식으로 관계를 맺어주는 것.
+		부모와 자식 클래스를 상속관계에 있다고 말한다.
+		
+class 부모클래스 {
+		...
+}
+class 자식클래스 extends 부모클래스 {
+		...
+}
+
+상속관계의특징 		자손은 조상의 모든 멤버(iv,cv)를 상속받는다. (생성자, 초기화블럭 제외)
+				자손의 멤버(iv,cv)개수는 조상보다 적을 수 없다. (같거나 많다)
+				자손의 변경은 조상에 영향을 미치지 않는다.
+				조상의 변경은 자손에게 영향을 미친다.
+
+class parent{
+	int age;
+}
+
+class child extends parent{
+	void play(){
+		System.out.println("Hello");
+	}
+	
+}
+
+
+# 포함관계 composite
+
+포함			클래스의 멤버로 참조변수를 선언하는 것.
+			ex) c1.c2.v, c1.c2.r ...
+
+class point {
+	int x;
+	int y;
+}
+
+class circle {
+	point p = new point();		point클래스의 객체를 생성한다.
+	int r;						
+}
+
+
+
+
