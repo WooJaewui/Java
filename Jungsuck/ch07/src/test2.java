@@ -1,18 +1,17 @@
-import java.security.spec.X509EncodedKeySpec;
 
-class Point{
+class Point10{
 	int x;
 	int y;
 	
 }
 
-class Circle extends Point{
+class Circle extends Point10{
 	
 	int r;
 }
 
 class Circle2 {
-	Point p = new Point();
+	Point10 p = new Point10();
 	int r;
 }
 
@@ -38,9 +37,7 @@ public class test2 {
 			
 			System.out.println(c2.p.x);
 			System.out.println(c2.p.y);
-			System.out.println(c2.r);
-			
+			System.out.println(c2.r);	
 			
 	}
-
 }
