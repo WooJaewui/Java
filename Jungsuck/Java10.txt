@@ -1,0 +1,280 @@
+# default 메소드와 static 메소드
+
+인터페이스에 default 메소드, static 메소드 추가했다. (JDK 1.8부터)
+인터페이스 상속이 끝난 후에 추상메소드 생성이 어려워서 다른 메소드를 추가했다. (충돌문제발생)
+충돌문제는 구현한 클래스에서 오버라이딩을 통해 해결한다.
+조상의 메소드와 디폴트 메소드가 충돌되면 조상의 클래스의 메소드가 상속된다. (???? 이해 안됨)
+
+
+# 내부 클래스 inner class.
+
+내부클래스				클래스 안에 클래스이다.
+					내부 클래스는 직접생성이 안된다. 외부 클래스를 선언 후에 생성가능하다.
+
+내부클래스 장점			내부 클래스에서 외부 클래스의 멤버들을 쉽게 접근할 수 있다.
+         			코드의 복잡성을 줄일 수 있다. (캡슐화)
+         			
+
+# 내부 클래스의 제어자와 접근성.
+
+내부클래스 제어자		내부클래스는 모든 접근제어자를 사용가능하다. 일반 클래스는 default, public만 사용가능.
+					static class만 static멤버를 정의할 수 있다. 
+					final static은 다른 메소드에서도 가능하다. 
+					
+					
+내부 static class		외부 iv멤버들을 사용할 수 없다.
+					static 멤버가 있을때 사용한다.
+					외부클래스에서 내부클래스를 사용하려면 내부클래스가 static이거나, 외부에서 내부클래스 인스턴스를 만들어야된다.
+
+final 				외부에서 사용하는 상수는 대부분 static을 붙인다.
+					내부에서만 사용하는 상수 또는 인스턴스마다 다른 값을 가지는 상수는 static을 생략한다.
+					변수인데 초기화 이후에 값이 한 번도 바뀌지 않으면 상수 취급한다
+					
+메소드 속 내부클래스		일반 지역변수는 사용할 수 없고, 상수만 사용가능하다.	
+					일반 지역변수는 내부클래스보다 일찍 제거될 수 있다. (메소드에서는 실행이 끝나면 제거된다)
+
+constant pool		상수만 따로 저장하는 것. (메소드에서 실행이 끝나도 상수는 data를 좀 더 유지해서 내부클래스에서 사용가능)
+
+
+# 내부클래스의 객체를 사용하는 법.
+
+class outer{
+	class inner{ };
+};
+
+외부클래스 참조변수 = new 외부클래스();                  			외부클래스 초기화.
+외부클래스.내부클래스 참조변수 = 외부클래스참조변수.new 내부클래스();   	내부클래스 초기화.
+내부클래스.변수;
+내부클래스.메소드();
+외부클래스.내부클래스.변수;
+외부클래스.내부클래스.메소드();
+
+outer o = new outer();							
+outer.inner oi = o.new inner();					
+
+인스턴스 생성시.
+inner.method();
+인스턴스 생성 안했을시.
+outer.inner.method();
+
+
+# 생성된 클래스의 이름.
+
+Name.class						일반클래스.
+Outer.class						외부클래스.
+Outer$inner.class				내부클래스.
+
+
+# 내/외부 클래스의 변수 구분.
+
+내/외부에 이름이 같은 변수가 있을때 사용.
+
+value						일반변수.
+this.value					내부클래스의 변수.
+outer.this.value			외부클래스의 변수.
+
+
+# 익명클래스 anonymous class
+
+익명클래스 		이름이없는 일회용 클래스이다. 정의와 생성을 동시에한다.
+익명클래스파일이름	외부클래스$1.class, 외부클래스$2.class...
+
+new 조상클래스이름(){			자신이 이름이 없어서 조상클래스이름을 사용한다.
+	멤버 선언.
+} 
+
+new 구현인터페이스이름(){		자신이 이름이 없어서 구현할 인터페이스의 이름을 사용한다.
+	멤버 선언.
+}
+
+구현하는방법.
+
+new 조상이름();	
+new 인터페이스이름();
+
+
+# 자바컴파일러가 하는 일.
+
+1. 구문체크.		
+2. 번역.			
+3. 최적화.  		3+5 (간단한 연산)
+
+
+
+# 프로그램 오류.
+
+컴파일에러		컴파일 할 때 발생하는 에러. (compile-time error)
+			컴파일 하기 전에 이클립스가 컴파일 error를 미리확인해준다.
+			cmd javac file.java
+			
+런타임에러		실행 중 발생하는 에러. (runtime error)
+			실행을 해봐야 확인가능.
+			에러와 예외가 있다.
+			cmd java file.class
+
+논리적에러		작성 의도와 다르게 동작하는 에러. (logical error)
+			실행까지 잘 되는데 내가 의도한 결과값이랑 다르게 나오는 경우. 
+
+
+# 런타임에러 2가지.
+
+에러 error		프로그램 코드에 의해서 수습될 수 없는 심각한 오류.
+예외 exception	프로그램 코드에 의해서 수습될 수 있는 다소 미약한 오류.
+
+
+# 예외를 처리하는 방법.
+
+1. try-catch문.		직접처리
+2. 예외선언하기. 		떠넘기기
+3. 은폐하기. 			은폐하기
+
+
+# 예외처리.
+
+예외처리		프로그램 실행 시 발생할 수 있는 예외의 발생에 대비한 코드를 작성하는 것이다.
+			프로그램의 비정상 종료를 막고, 정상적인 실행상태를 유지하는 것이다.
+
+
+# 예외클래스의 계층구조.
+
+object => Throwable(모든 오류의 조상)	=> Error		=> 자손들...
+								 	=> Exception 	=> 자손들... 
+								 					=> RuntimeException => 자손들... 
+								 	
+# Exception과 RuntimeException.
+
+Exception클래스들				Exception + 자손들.
+							사용자의 실수와 같은 외적인 요인에 의해 발생하는 예외.
+							ex) IOException, ClassNotFoundException, ...
+						
+RuntimeException클래스들		RuntimeException + 자손들.
+							프로그래머의 실수로 발생하는 예외.
+							ex) ArithmeticException, ClassCastException, ...
+							
+
+# try-catch문.
+
+try {
+		예외가 발생할 가능성이 있는 문장들을 넣는다.
+} catch (Exception1 e1) {
+		Exception1이 발생했을 경우, error를 처리하기 위한 문장을 적는다.
+} catch (Exception2 e2) {
+		Exception2이 발생했을 경우, error를 처리하기 위한 문장을 적는다.
+} catch (ExceptionN eN) {
+		ExceptionN이 발생했을 경우, error를 처리하기 위한 문장을 적는다.
+}
+
+안에 문장이 하나여도 괄호 생략 불가능.
+
+
+# try-catch문의 실행흐름.
+
+try블럭 내에서 예외가 발생한 경우.
+
+1. 발생한 예외와 일치하는 catch블럭이 있는지 확인한다.
+2. 일치하는 catch블럭을 찾게되면, 그 catch블럭 내의 문장들을 수행하고 전체 try-catch문을 빠져나가
+   그 다음 문장을 계속해서 수행한다. 만약 일치하는 catch블럭을 찾지 못하면, 예외는처리되지 못한다. (error 발생)
+
+try블럭 내에서 예외가 발생하지 않은 경우.
+
+1. catch블럭을 거치지 않고 전체 try-catch문을 빠져나가서 다음 문장을 수행한다.
+
+
+# Exception class.
+
+모든 Exception에러의 조상이기때문에 catch문에서 제일 마지막에 와야한다. (앞에 사용하면 앞에서 모든 error를 다 처리한다)
+
+
+# printStackTrace(), getMessage()
+
+예외가 발생하면 예외클래스로 된 객체가 만들어진다.
+예외에 관련된 정보를 객체에 저장한다. ex) printStackTrace 메소드, getMessage 메소드, ...
+
+printStackTrace()		예외발생 당시의 호출스택에 있었던 메소드의 정보와 예외 메세지를 화면에 출력한다.
+getMessage()			발생한 예외클래스의 인스턴스에 저장된 메시지를 얻을 수 있다.
+
+ex) try{
+	} catch (ArithmeticException ae){
+		ae.printStackTrace();
+		ae.getMessage();
+	}
+ 
+
+# 멀티 catch블럭.
+
+서로다른 error의 e.printStackTrace()가 같은내용이면 두 개의 catch를 하나로 합칠 수 있다.
+둘 중에 하나만 있는 멤버를 사용할 수 없다. (둘 중에 어느 class의 인스턴스가 들어왔는지 알 수 없다)
+
+ex) catch (Exception1 || Exception2 e){
+			내용.
+	}
+
+
+# 예외 발생시키기.
+
+1. 연산자 new를 이용해서 발생시키려는 예외 클래스의 객체를 만든 다음.
+
+	Exception e = new Exception();
+	
+2. 키워드 throw를 이용해서 예외를 발생시킨다.
+	
+	throw e;
+
+
+# 예외의 종류.
+
+checked예외		컴파일러가 예외 처리 여부를 체크하는 것 (예외 처리 필수)
+				컴파일이 진행이 안된다. (무조건 try-catch해야된다)
+				Exception + 자손들.. (외부적인 요인)
+				
+unchecked예외		컴파일러가 예외 처리 여부를 체크안함. (예외 처리 선택적)
+				컴파일이 진행된다. (try-catch 선택적)
+				코드가 진행되다가 exception부분을 실행하다가 error 발생.
+				RuntimeException + 자손들.. (프로그래머의 실수)
+				
+				
+# 메소드에 예외 선언하기.
+
+메소드예외선언 		메소드가 호출시 발생가능한 예외를 호출하는 쪽에 알리는 것.
+				throw exception을 try-catch를 하지 않으면 error가 발생한다.
+				보통 예외는 필수처리(checked) 예외만 선언한다.
+				exception의 범위에 의해 오버라이딩의 여부가 결정된다. (예외가 많은것에서 적은것으로는 오버라이딩 X)
+
+void method() throws Exception1, ... {			Exception1, ...의 예외가 발생가능하다.
+		메소드의 내용.
+}
+
+void method() throws Exception {				모든종류의 Exception이 발생가능하다.
+		메소드의 내용.
+}
+
+
+# 오버라이딩 조건 3가지. (복습)
+
+1. 구현부가 같을 것.
+2. 접근제어자가 더 좁게 X.
+3. 예외를 더 많이 X.
+
+
+# 예외선언의 정리.
+
+예외선언한 메소드를 다른메소드에서 호출하면, 결국 try-catch문을 둘 중 하나의 메소드에서 사용해야만 error가 발생하지 않는다.
+
+1. 예외선언한 메소드에서 try-catch 	=> 	try-catch방식.  	예외선언한 throw를 지워줘야 error가 발생하지 않는다.
+2. 호출한 메소드에서 try-catch 		=> 	예외선언방식.		
+
+
+# finally 블럭.
+
+예외 발생여부와 관계없이 수행되어야 하는 코드를 넣는다.
+
+ex) try {
+		1;
+		2;						2에서 error가 발생.
+		3;						3은 무조건 실행해야 되는 문장.
+	} catch(Exception e){
+		4;						error를 처리해주는 문장.
+	} finally {
+		3						1,2에서 error가 발생해도 3을 실행한다.
+	}
+
