@@ -1,0 +1,479 @@
+# 사용자 정의 예외 만들기.
+
+우리가 직접 예외 클래스를 정의할 수 있다.
+조상은 Exception과 RuntimeException중에서 선택하면 된다.
+사용자 정의 예외는 선택예외인 RuntimeException으로 만드는 것이 대부분 유리하다.
+
+class MyException extends Exception {}					필수처리.
+class MyException extends RuntimeException{				선택처리.
+		MyException(String msg){						
+			super(msg);									조상인 Exception클래스의 생성자를 호출한다.
+		}
+}			
+
+
+# 예외 되던지기 exception re-throwing.
+
+예외 되던지기		예외를 처리한 후에 다시 예외를 발생시키는 것.
+				예외를 여러번 처리하는 것이다.
+				여러 부분에서 나눠서 error를 처리하는 것이다.
+				
+ex) static method1 (){
+		try{
+			methd2();
+		} catch () {
+		
+		}
+}
+	static method2 () throws Exception{
+		try {
+			throw Exception;
+		} catch (Exception e) {
+			System.out.println("Exception error가 발생되었습니다.");		error 처리
+			throw e;												error 다시 발생시킨다.
+		}
+	
+	}
+
+
+# 연결된 예외 chained exception
+
+연결된 예외	한 예외가 다른 예외를 발생시킬 수 있다.
+			예외 A가 예외 B를 발생시키면, A는 B의 원인예외cause Exception가 된다.
+			initCause 메소드를 통해 원인예외를 등록해준다.
+
+예외b.initCause(예외A a)						예외안에 또다른 예외를 추가한다.
+
+ex) try {
+		throw SpaceException;
+	} catch (SapceException e){
+		InstallException ie = new InstallException();		새로운 error ie를 생성한다.
+		ie.initCause(e);									새로운 error에 e error를 원인으로 추가.
+		throw ie;											새로운 error를 발생시킨다.
+	} 
+
+
+
+# Throwable 초기오류.
+
+public class Throwable implements Seriablizable {
+				...
+				...
+	private Throwable cause = this;
+				...
+	public synchronized Throwable initCause(Throwable cause2){
+			this.cause = cause2;
+			return this;
+	}
+	
+} 
+
+
+# 연결된 예외를 사용하는 이유.
+
+1. 여러 예외를 하나로 묶어서 다루기 위해서.
+  	캐치 블럭의 수를 줄일 수 있다. (한 번에 여러 error를 처리할 수 있다)
+
+	ex) e2.initCause(e1 e);
+
+2. checked예외를 unchecked예외로 변경하려 할 때 사용한다.
+  	상속 관계에 상관없이 error들을 연관지을 수 있어서 checked를 unchecked로 변경 가능하다.
+  	
+	ex) new e2(new e1);
+
+
+# hashCode()
+
+hashCode()		객체의 해시코드를 반환하는 메소드. (객체의 지문)
+				Object클래스의 hashCode()는 객체의 주소를 int로 변환해서 반환한다.
+				equals()를 오버라이딩하면, hashCode()도 오버라이딩해야된다. hashCode()는 equals()에 값에 영향을 받는다.
+				equals()의 결과가 true인 두 객체의 해시코드는 같아야하기 때문이다.
+				
+equals()			A와 B의 주소값을 통해 서로 같은지 확인하는 메소드. ex) equals(Object obj){내용} 오버라이딩 할 경우.
+native()			os의 메소드. (주로 C언어로 작성)
+JNI					자바에서 자바가 아닌 언어로 작성된 코드를 사용 할 수 있도록 도와주는 것. (따로 공부하기)
+identityHashCode()	Object클래스의 hashCode()와 동일하다.
+					ex) System.identityHashCode(str1);
+
+
+# hashCode()의 오류.
+
+hashCode()는 int의 값 4byte로 data를 저장하는데 32bit의 JVM에서는 int값으로 맞게 사용되지만,
+64bit JVM에서는 8bit Long으로 주소값을 사용해야 되는데 hashCode()를 Long으로 바꿀 수 없어서 주소가 겹치는 error가 발생 할 수 있다.
+
+  
+# toString()
+
+toSting()		객체를 문자열(String)으로 변환하기 위한 메소드.
+				객체를 문자열로 바꾼다는 것은 객체안에 있는 멤버들을 문자열로 나타낸다는 것과 같다.
+				toString()을 오버라이딩해서 variable값을 반환하는 메소드로 바꿔주는 것도 유용하다.
+				
+Object클래스에서 String
+
+public String toString(){
+	return getClas().getName()+"@"+Integer.toHexString(hashCode());
+}
+
+
+# Object 클래스.
+
+모든 클래스의 최고 조상. 오직 11개의 메소드만 가지고 있다. 변수가 없다.
+
+clone()					객체 자신의 복사본을 반환한다.
+equals(object obj)		객체 자신과 객체 obj가 같은 객체인지 알려준다. (같으면 true)
+hashCode()				객체 자신의 해시코드를 반환한다.
+toString()				객체 자신의 정보를 문자열로 반환한다.
+getClass()				객체 자신의 클래스 정보를 담고 있는 Class인스턴스를 반환한다.
+
+쓰레드 관련된 것.
+
+notify()						객체 자신을 사용하려고 기다리는 쓰레드를 하나만 깨운다.
+notifyAll()						객체 자신을 사용하려고 기다리는 모든쓰레드를 깨운다.
+wait()							다른 쓰레드가 notify()를 호출할때까지,
+wait(long timeout)				현재 쓰레드를 무난히 또는 지정된 시간(timeout, nanos)동안 기다리게한다.
+wait(long timeout, int nanos)	timeout = 천 분의 1초, nanos = 10**9분의 1초.
+
+거의 안씀.
+finalize()				객체가 소멸될 때 가비지 컬렉터의 의해 자동적으로 호출된다. 
+						이때 수행되어야하는 코드가 있을 때 오버라이딩한다.
+
+
+# Class 클래스 이름에 첫글자가 대문자인 클래스. 
+
+클래스 정보를 담기위한 클래스이다. ex) Class
+클래스를 하나 만들면 그 클래스의 정보를 담기위한 Class class가 만들어진다.
+Class를 통해 class의 정보를 확인하는 것이 Object에 getClass() 메소드이다.
+리플렉션 API를 배워보자.
+
+
+# equals(Object obj)
+
+객체자신(this)와 주어진 객체(obj)를 비교한다. 같으면 true, 다르면 flase.
+Object클래스의 equals()는 객체의 주소를 비교한다. (참조변수 값 비교)
+
+ex) public boolean equals(Object obj){			오버라이딩 할때 선언부를 같게 한다.
+		if (obj instanceOf class){				매개변수로 받은 obj가 같은 클래스인지 확인한다.
+			class c = (class)obj;				같은 클래스의 type으로 형변환해준다.
+			return this.value == c.value;		두 class의 value를 확인하고 반환한다.
+		} else return false;					두 class가 서로 다른 class면 false를 반환한다.
+}
+
+
+# String 클래스.
+
+String class	문자열을 다루는데 사용되는 class이다.
+				데이터(char[]) + 메소드(문자열 관련)
+				내용을 변경할 수 없는 불변클래스이다. (문자열 결합은 성능이 떨어진다)
+				문자열의 변경이 잦다면, 내용을 변경가능한 StringBuffer를 사용하는 것이 좋다.
+				
+				
+불변클래스 		내용을 변경할 수 없는 클래스. immutable 클래스.
+
+
+# 문자열의 비교.
+
+String str1 = "abc";
+String str2 = "abc";
+String str3 = new String("abc");
+string str4 = new String("abc");
+
+str1와 str2는 "abc"를 공유하고, str3와 str4는 각각 다른 인스턴스 "abc"를 가진다.
+str1와 str2가 서로 "abc"를 공유하지만, 어차피 String은 불변클래스이기 때문에 str3와 str4 다를 것이 없다.
+
+str1 == str2 X  ,   str1.equals(str2) O.
+
+
+# 문자열 리터럴. (상수)
+
+문자열리터럴은 프로그램 실행 시 자동으로 생성된다. (constant pool에 저장)
+같은 내용의 문자열 리터럴은 하나만 만들어진다.
+
+
+# 빈 문자열. empty string.
+
+빈문자열		내용이 없는 문자열. 길이가 0인 char형 배열을 저장하는 문자열.
+			크기가 0인 배열을 생성하는 것은 어느 타입이나 가능하다. ex) int[] iarr = {};
+			null로 초기화하는 것보다 "" 빈 문자열로 초기화하는게 더 유용하다.
+			
+ex) String s = "";		빈 문자열로 초기화.
+	char c = ' ';		공백으로 초기화.
+
+
+# 배열의 길이와 크기.
+
+길이		length		배열의 element의 갯수.
+크기		size 		몇 바이트를 차지하는지. type의 byte x 배열의길이.
+
+
+# String 클래스의 생성자와 메소드.
+
+생성자.
+
+String(String s)
+
+String(char[] value)			char배열에 있는 element를 String으로 바꿔준다.
+								ex) char[] c = {'H','e','l','l',o};
+									String c = new String(c);
+									s = "Hello";
+toCharArray()					String을 char로 바꿔준다.
+
+String(StringBuffer buf)		StringBuffer를 String으로 바꿀때 사용한다.
+
+메소드.
+
+char charAt(int index)			지정된 위치(index)에 있는 문자를 알려준다.
+								ex) String s = "Hello"
+									char c = s.charAt(2);
+									c = 'l'
+
+int compareTo(String str)		string 두개의 사전값을 비교해서 int값을 반환한다.
+								ex) int i = "aaa".compareTo("aaa");
+									i = 0;
+									int i = "aaa".compareTo("bbb");
+									i = -1;
+									int i = "bbb".compareTo("aaa");
+									i = 1;
+
+String concat(String str)		문자열을 뒤에 덧붙인다.
+								ex) String s = "Hello";
+									String s2 = s.concat(" World");
+									
+boolean contains(CharSequience s)	지정된 문자열(s)이 포함되었는지 검사한다.
+									ex) String s = "abcde";
+										boolean b = s.contains("b");
+										b = true;
+										
+boolean endsWith(String suffix)		지정된 문자열suffix로 끝나는지 검사한다.
+									ex) String file = "Hello txt";
+										boolean b = file.endsWith("txt");
+										b = true;
+										
+boolean startWitg(String suffix)	지정된 문자열suffix로 끝나는지 검사한다.
+									ex) String file = "Hello txt";
+										boolean b = file.startWith("Hello");
+										b = true;
+										
+boolean equals(Object obj)			매개변수 obj와 인스턴스의 정보를 비교한다.
+									ex) String s = "Hello"
+										boolean b = s.equals("Hello"); 
+										b = true;
+										
+boolean equalsIgnoreCase(String str) 	대소문자 구분없이 비교한다.
+										ex) String s = "HELLO";
+											boolean b = s.equalsIgnoreCase("hello");
+											b = true;
+											
+int indexOf(int i)						주어진 문자 i가 문자열에 존재하는지 확인하여 index값을 반환한다.
+										ex) String s = "Hello";
+											int i = s.indexOf('o');
+											int i2 = s.indexOf('k");
+											i = 4;			
+											i2 = -1;		값을 못찾으면 -1을 반환한다.
+											
+int indexOf(int i, int pos)				문자 i가 문자열에 존재하는지 지정된 위치 pos부터 확인하여 index값을 반환한다.
+										ex) String s = "Hello";
+											int i = s.indexOf('o', 1);
+											int i2 = s.indexOf('e',3);
+											i = 1;
+											i2 = -1;
+											
+int indexOf(String str)					str 문자열이 존재하는지 확인하여 그 위치의 index값을 반환한다.
+										ex) String s = "Hello";
+											int i = s.indexOf("el");
+											i = 1;
+											
+int lastIndexOf(int i)					문자 i가 오른쪽부터 찾아서 인덱스값을 알려준다.
+										ex) String s = "Hello";
+											int i = s.lastIndexOf('l');
+											int i2 = s.lastIndexOf('l');
+											i = 3;
+											i = 2;
+
+int lastIndexOf(String str)				ex) String s = "java.lang.java";
+											int i = s.lastIndexOf("java");
+											int i2 = s.lastIndexOf("java");
+											i = 10;
+											i2 = 0;
+											
+int length()							문자열의 길이를 알려준다.
+										String s = "Hello";
+										int i = s.length();
+										i = 5;
+
+String[] split(String regex)			regex = 정규식 Regular Expression.
+										문자열을 지정된 regex로 나누어 문자열 배열에 담아 반환한다.
+										ex) String s = "dog,cat,bear";
+											String[] arr = s.split(",");
+											arr = {"dog", "cat", "bear"};
+										
+String[] split(String regex, int limit)		문자열을 regex로 나누어 문자열배열에 담아 반환하는데, limit 만큼 나눈다.
+											ex) String s= "dog,cat,bear";
+												String[] arr = s.split("," , 2);
+												arr = {"dog", "cat,bear"}
+
+String substring(int begin)					begin에서부터 end위치까지 문자열을 반환한다. end가 없으면 끝까지.
+String substring(int begin, int end)		ex) String s = "java.lang.Object";
+												String s2 = s.substring(7);
+												String s3 = s.substring(5,9);	마지막은 생략.
+												s2 = "ng.Object";
+												s3 = "lang";
+
+String toLowerCase()						모두 소문자로 반환한다.
+											ex) String s = "HELLO";
+												String s2 = s.toLowerCase();
+												s2 = "hello";
+
+String toUpperCase()						모두 대문자로 반환한다.
+											ex) String s = "hello";
+												String s2 = s.toUpperCase();
+												s2 = "HELLO";
+
+String trim()								문자열의 양쪽의 공백을 없앤 결과를 반환한다.
+											ex) String s = "     Hello      ";
+												String s2 = s.trim();
+												s2 = "Hello";
+												
+String valueOf(Data d)						기본형의 Data를 String으로 바꿔준다.
+											ex) String s = String.valueOf(int);
+												String s = String.valueOf('a');
+												String s = String.valueOf(10);
+												          ....
+												          
+String valueOf(Object o)					참조변수를 매개변수로 받을경우, toString()을 호출한 결과를 반환한다.
+											ex) java.util.Date dd = new java.util.Date();
+												String date = String.valueOf(dd);		
+												date = "Wed Jan 27 21:26:29 KST 2021"
+												
+												Date 메소드의 값이 toString()으로 형변환되어 출력된다.
+
+
+# join()과 StringJoiner
+
+join()		여러 문자열 사이에 구분자를 넣어서 결합한다.
+			ex) String s = "dog,cat,bear";
+				String[] arr = s.split(",");
+				String s2 = String.join("-",arr);
+				s2 = "dog-cat-bear"
+
+
+# 문자열과 기본형 간의 변환.
+
+숫자를 문자열로 바꾸는 방법.
+
+   int i = 100;
+1. String str1 = i + "";					편리하다.
+2. String str2 = String.valueOf(i);			빠르다.
+					
+문자열을 숫자로 바꾸는방법.
+
+int i = Integer.parseInt("100");
+int i2 = Integer.valueOf("100");
+Integer i2 = Integer.valueOf("100");
+오토박싱이 참조형(Integer)을 기본형(int)으로 바꿔준다.
+
+
+# StringBuffer클래스.
+
+StringBuffer	String처럼 문자형 배열(char[])을 내부적으로 가지고 있다.
+				String과 달리 내용을 변경할 수 있다. (mutable)
+				배열은 길이 변경불가. 길이가 부족하면 새로운 배열 생성해야된다.
+				StringBuffer는 저장할 문자열의 길이를 고려해서 적절한 크기로 생성해야된다.
+				길이를 따로 정하지 않으면 16이 되고, 길이가 3인 char를 넣으면 3+16이 된다.
+
+append()		끝에 문자열 추가.
+				ex) StringBuffer sb = new StringBuffer("abc");
+				sb.append("123") => "abc123"
+				
+delete()		문자열 삭제.
+insert()		삽입.	
+		
+이러한 메소드들의 반환타입이 모두 StringBuffer이다.
+(중요) StringBuffer는 equals()가 오버라이딩되어있지 않다. (주소비교를 한다)
+	  비교하려면 String으로 형변환후에 equals()로 비교해야된다.
+
+
+# StringBuffer의 생성자와 메소드.
+
+생성자
+
+StringBuffer()					길이가 16인 배열이 만들어진다.
+
+StringBuffer(int length)		길이가 length인 배열이 만들어진다.
+								ex) StringBuffer sb = new StringBuffer(10);
+								
+StringBuffer(String str)		길이가 str + 16인 배열이 만들어진다.
+								ex) StringBuffer sb = new StringBuffer("abc");
+					
+메소드
+								
+StringBuffer append(all a)		매개변수로 입력된 값들을 String으로 바꿔서 추가해준다.
+								ex) StringBuffer sb = new StringBuffer(true);
+									StringBuffer sb2 = sb.append('d').append(10.0);
+									sb = "trued10.0"
+									sb2 = "trued10.0"
+									모두 같은 것을 가르키고있다.
+									
+int capacity()					StringBuffer 인스턴스의 버퍼크기를 알려준다.
+								ex) StringBuffer sb = new StringBuffer(100);
+									sb.append("abcd");
+									int i = sb.capacity();
+									int i2 = sb.length();
+									i = 100;
+									i2 = 4;
+									
+char charAt(int index) 			지정된 위치(index)에 있는 문자를 반환한다.
+								ex) StringBuffer sb = new StringBuffer("abc");
+									char c = sb.charAt(2);
+									c = 'c';
+									
+StringBuffer delete(int start, int end)		시작부터 끝위치 사이에 있는 문자를 제거한다. 끝 위치는 제거하지 않는다.
+											ex) StringBuffer sb = new StringBuffer("abcdef");
+												StringBuffer sb2 = sb.delete(2,4);
+												sb = "abef";
+												sb2 = "abef";
+												
+StringBuffer delete(int index)				인덱스값을 제거한다.
+
+StringBuffer insert(int pos, all a)			pos의 index값 위치에 a의 data를 String으로 변환하여 추가한다.
+											ex) StringBuffer sb = new StringBuffer("abcdef");
+												StringBuffer sb2 = sb.inser(3, "world");
+												sb2 = abcworlddef";
+												
+int length()								저장되어 있는 문자열의 길이를 확인한다.
+
+StringBuffer replace(int start, int end, String str)	지정된범위에 문자들을 주어진 문자열로 바꾼다.
+														ex) StringBuffer sb = new StringBuffer("Hello");
+															StringBuffer Sb2 = sb.replace(1,3,oo);
+															sb2 = "Hoolo";
+															
+StringBuffer reverse()						문자열 뒤집기.
+											ex) StringBuffer sb = new StringBuffer("0123456789");
+												sb.reverse();
+												sb  = "9876543210";
+												
+
+void setCharAt(int index, char ch)			지정된 위치 index의 문자를 주어진문자 ch로 바꾼다.				
+									        ex) StringBuffer sb = new StringBuffer("01234");
+									        	sb.setCharAt(2,'o');
+									        	sb = "01o34";
+									        	
+void setLength(int newLength)				지정된 길이로 문자열의 길이를 변경한다. 길이를 늘리면 나버지 빈 공간은 null이다.
+											ex) StringBuffer sb = new StringBuffer("01234");
+												sb.setLength(3);
+												sb = "0123"
+												sb.setLength(10);
+												sb = "0123       ";
+												String s = sb.toString().trim();
+												
+String toString();							StringBuffer를 String으로 형변환한다.
+
+String substring(int start)					start부터 length까지 문자열을 String으로 뽑아서 반환한다.
+String substring(int start, int end)		start부터 end까지 문자열을 String으로 뽑아서 반환한다.
+											ex) StringBuffer sb = new StringBuffer("abcde");
+												String s = sb.substring(2,4);
+												String s2 = sb.substring(2);
+												s = "cd";
+												s2 = "cde";
+
+
+												
