@@ -1,0 +1,338 @@
+# 배열의 장단점.
+
+장점		구조가 간단하고 데이터를 읽는 데 걸리는 시간(접근시간 access time)이 짧다.
+		앞부분에 데이터와 끝부분의 데이터를 읽어오는데 걸리는 시간이 거의 같다.
+
+단점		크기를 변경할 수 없다. (실행 중에)
+		크기를 변경해야 되면 새로운 배열을 생성 후 데이터를 복사해야된다.
+		크기 변경을 피하기 위해 큰 배열을 생성하면, 메모리가 낭비된다.
+		배열 안에 데이터의 추가, 삭제에 시간이 많이 걸린다. (중간에 data를 추가/삭제하면 shift를 해줘야된다)
+		시작부분과 끝부분의 data를 추가 삭제하는 것은 빠르다.
+
+
+# LinkedList class.
+
+LinkedList 		배열의 단점을 보완하기 위해서 만들어졌다.
+				배열과 달리 linkedList는 불연속적으로 존재하는 data를 연결한다. (크기 변경 가능)
+				연속적이지 않아서 추가/삭제할때 shift가 발생하지 않는다. (data 추가/삭제에 유리하다)
+				데이터 접근성이 나쁘다. (순차적으로 이동하기 때문에)
+
+노드				각각 하나의 data를 의미한다.
+				자신의 다음노드의 위치를 변수로 담고 있다.
+				
+더블리 링크드 리스트		doubly linked list.
+					다음노드위치와, 이전의노드위치를 알고 있다. (접근성 향상 - 실제 자바)
+
+더블리 써큘러 링크스 리스트	doubly circular linked list.
+						다음노드,이전노드위치를 알고 있다. (접근성 조금 더 향상 배열비해 나쁜편이다)
+						맨 처음과 맨 끝이 연결되어 있다.
+
+
+# ArrayList vs LinkedList.
+
+순차적 데이터 추가/삭제 			ArrayList가 빠름.
+비순차적 데이터 추가/삭제 		LinkedList가 빠름.
+접근시간 						ArrayList가 빠름.
+읽기							ArrayList가 빠름.
+
+배열기반.		ArrayList.	연속		데이터 읽기에 유리.	
+연결기반.		LinkedList. 불연속	데이터 추가/삭제에 유리.
+
+
+# 스택 Stack과 큐 Queue.
+
+Stack 		마지막에 저장된 것을 제일 먼저 꺼내게 된다.
+			인풋과 아웃풋이 하나의 구멍으로 진행되는 것이다.
+			배열이 조금 더 적합하다.
+			LIFO	Last In First Out.
+			push		저장.
+			pop			추출.
+			
+Queue		처음에 넣은 것을 제일 먼저 꺼내게 된다.
+			인풋과 아웃풋이 서로 다른 구멍으로 진행되는 것이다.
+			링크스리스트가 조금 더 적합하다.
+			FIFO	First In First Out.
+			offer	저장.
+			poll	추출.
+			
+
+# Stack class.
+
+Stack stk = new Stack();
+
+메소드. 
+
+boolean empty();			stack이 비어있는지 알려준다.
+Object peek();				맨 위에 저장된 객체를 반환한다.
+Object pop();				Stack에 맨 위에 저장된 객체를 제거한다(꺼낸다).
+Object push(Object item);	Stack에 객체(item)을 저장한다.
+int search(Object o); 		o가 stack에 몇번째 있는지 알려준다. (1부터 시작) 못찾으면 -1반환.
+
+
+# Queue 인터페이스.
+
+인터페이스라서 인스턴스 생성을 할 수 없다.
+
+메소드. 
+
+boolean add(Object o);			Queue에 객체 o를 추가한다. 저장공간이 부족하면 Exception발생.
+Object remove();				Queue에서 객체를 제거한다. 비어있으면 Exception발생.
+Object element();				삭제 없이 요소를 읽어온다. Queue가 비어있을때 Exception발생.
+boolean offer(Object o);		Queue에 객체 o를 저장한다. 실패하면 false를 반환.
+Object poll();					Queue에서 객체를 제거한다. 비어있으면 null을 반환.
+Object peek();					삭제 없이 요소를 읽어온다. Queue가 비어있으면 null을 반환.
+
+더 많은 메소드들이 있다.
+
+
+# Queue 인스턴스 만들기.
+
+인스턴스 생성방법.
+
+1. Queue를 직접구현한다.
+2. Queue를 구현한 클래스를 사용한다. ex) LinkedList.
+
+Queue를 구현한 클래스 사용하기.
+
+Queue que = new LinkedList();
+
+
+# Stack과 Queue의 활용.
+
+Stack		수식계산, 수식괄호검사, undo/redo, 뒤로/앞으로
+Queue		최근사용문서, 인쇄작업 대기목록, 버퍼(buffer)
+			Queue.size() = 길이.
+
+
+# Iterator, ListIterator, Enumeration 인터페이스.
+
+공통점			컬렉션 인터페이스에 저장된 데이터를 읽어오는데 사용되는 인터페이스.
+
+
+Iterator		이것만 정확히 알면 된다.
+				Map에는 iterator()가 없다.
+
+Enumeration		iterator의 구버전이다.
+ListIterator	iterator의 접근성을 향상시킨 것이다. (단방향 => 양방향)
+				previous()를 추가했다. List에서만 사용가능. 
+
+메소드.
+
+boolean hasNext()		읽어 올 요소가 남아있는지 확인한다.
+Object next()			다음 요소를 읽어 온다.
+
+
+# Iterator의 필요성.
+
+컬렉션에 저장된 요소들을 읽어오는 방법을 표준화한 것이다.
+컬렉션에 iterator()를 호출해서 iterator를 구현한 객체를 얻어서 사용한다.
+iterator()는 컬렉션 인터페이스에 있다.
+iterator 인스턴스는 일회용이다. 한 번 next하면 그 전으로 되돌릴 수 없다. (다시 인스턴스를 만들어야됨)
+
+ex) List list = new ArrayList();
+    Iterator it = list.iterator();	
+    it.hasNext();
+    it.next();
+    
+ArrayList 컬렉션에 iterator()메소드를 사용하면 iterator 객체를 반환한다.
+
+
+# 참조변수 이름 한 번에 바꾸는 방법.
+
+참조변수를 드래그하고 마우스 우클릭 + Refactory => Rename 하면 참조변수를 사용하는 참조변수의 이름이 한 번에 변경된다.
+
+
+# Map과 Iterator.
+
+Map에는 iterator()가 없다. keySet(), entrySet(), values()를 호출해서 사용해야된다.
+
+Map map = new HashMap();
+
+Iterator it = map.entrySet().Iterator();			객체 생성.
+
+
+# Arrays class.
+
+Arrays		배열을 다루기 편리한 메서드 제공. ex) Math, Object, Collection.
+
+메소드.
+
+toString(type)			배열의 내용을 문자열로 출력해준다.
+
+copyOf(arr, length);			배열의 길이만큼 복사해서 새로운 배열을 만들어줌.
+copyOfRange(arr,start,end);		배열의 시작부터 끝까지 복사해서 새로운 배열을 만들어줌. (start<= x < end)
+
+fill(arr, type);									배열을 type으로 채운다.				
+setAll(arr, (i) -> (int)(Math.random()*5)+1);		1~5까지의 랜덤정수값으로 채운다.
+
+sort(arr);						배열을 정열해준다.				
+binarySearch(arr, data);		정렬되있을때, 배열안에 data의 index값을 반환한다.
+
+deepToString(arr);				다차원배열을 문자열로 출력해준다.
+deepEquals(arr1, arr2);			다차원배열을 비교할때 사용한다.
+
+asList(Object.. o);				배열을 List로 변환시켜준다. (배열을 넣어도 되고, data를 넣어도 된다)
+
+parallelXXX();					14장에서 배우기.
+spliterator();
+stream();
+
+
+# 순차검색과 이진검색.
+
+순차검색.		data를 앞/뒤에서부터 순서대로 찾는 것.
+이진검색.		data를 정렬한 후에 범위를 좁혀가면서 찾는 것이다. (이분검색 binary search)
+            단점 정렬을 한 후에 사용해야된다.
+
+
+# Comparator와 Comparable.
+
+객체 정렬에 필요한 메소드를 정의한 인터페이스.
+
+Comparable		기본 정렬기준을 구현하는데 사용. ex) 오름차순.
+				일반적인 class들은 Comparable 인스턴스를 상속받아서 사용한다. (compare, compareTo를 사용가능)
+				
+Comparator		기본 정렬기준 외에 다른 기준으로 정렬하고자 할 때 사용. ex) 내림차순.
+
+정렬				정렬대상과 정렬기준이 필요하다.
+				1. 두 대상비교 	2. 자리바꿈
+
+메소드.
+
+compare(o1, o2)		0 = 같다, 양수 = 왼쪽이크다, 음수 = 오른쪽이 크다.
+compareTo(o)		o 객체와 자신과 비교한다. (삼항연산자로 되어있다)
+
+String.CASE_INSENSITIVE_ORDER		String 클래스에 정렬기준 중에 하나이다.
+									String 클래스는 Comparable 인터페이스를 상속받는다.
+				
+
+# HashSet와 TreeSet.
+
+HashSet		순서 유지하지않고, 중복 허용하지 않는다.
+			Set인터페이스를 구현한 대표적인 컬렉션 클래스.
+			순서를 유지하려면, LinkedHashSet클래스를 사용하면 된다.
+			
+TreeSet		범위 검색과 정렬에 유리한 컬렉션 클래스이다.
+			HashSet보다 데이터 추가/삭제에 시간이 더 걸림.
+			
+
+# HashSet class.
+
+생성자
+
+HashSet()											
+HashSet(Colleciotn c)								
+HashSet(int initialCapacity)						초기의 크기를 결정해준다.	
+HashSet(int initialCapacity, float loadFactor)		loadFactor는 몇퍼센트가 됐을때 양을 늘릴지 결정해준다.
+
+메소드.
+
+boolean add(object o)						추가.
+boolean addAll(Collection c)				콜렉션에 있는 걸 추가함.
+boolean remove(Object o)					제거.
+boolean removeAll(Collection c)				HashSet에 있는 객체중에 C에 있는 객체를 삭제.
+boolean retainAll(Collection c)				콜렉션과 HashSet에 둘 다 있는 객체만 남김.
+void clear()								모두삭제.
+
+boolean contains(Object o)					Hash객체가 o를 포함되어 있는지 확인.
+boolean containAll(Collection c)			Hash객체가 c에 있는 있는 객체를 모두 포함하는지. 
+literator iterator()						collection에 요소를 읽어올 수 있다.
+
+boolean isEmpty()							비어있는지.
+int size()									저장된 객체의 갯수.
+Object[] toArray()							Hash객체를 배열로 반환.
+Object[] toArray(Object[] a)				O를 배열로 반환.
+
+
+# Collection 특징.
+
+ 대부분 생성자에 다른 Collection을 받을 수 있도록 되어있어서 서로 형변환이 자유롭다.
+
+Set는 원래 순서가 없어서 정렬이 불가능한데, List로 형변환하면 sort()메소드를 사용할 수 있다.
+ex) List li = new LinkedList(set); 
+
+
+# Set의 Collection의 원리.
+
+HashSet은 객체를 저장하기전에 기존에 같은 객체가 있는지 확인한다.
+(같은 객체가 없으면 저장하고, 있으면 저장하지 않는다)
+boolean add(Object o)는 저장할 객체의 equals()와 hashCode()를 호출한다.
+(equals()와 hashCode()가 오버라이딩 되어 있어야 함)
+
+ex) Objects.hash(변수,변수) 
+
+
+# 가변인자.
+
+매개변수로 여러가지를 다 받을 수 있는 인자.
+
+ex)int hash(Object... values);
+
+
+# TreeSet class.
+
+TreeSet		이진탐색트리로 구현. 범위 탐색과 정렬에 유리하다.
+			왼쪽과 오른쪽 자식을 가르킬 수 있다.
+			중복허용 X. 순서 X.
+			
+TreeSet 구성요소.
+
+class TreeNode {
+		TreeNode 	left;
+		Object   	element;
+		TreeNode 	right;
+}
+
+
+# 이진트리 binary tree, 이진탐색트리 binary search tree.
+
+이진트리			이진트리는 모든노드가 0~2개의 하위 노드를 갖음.
+				각 요소(노드)가 나무 형태로 연결. (LinkedList의 변형)
+
+이진탐색트리		부모보다 작은 값 = 왼쪽,  큰 값 = 오른쪽에 저장.
+				데이터가 많아질 수록 추가/삭제에 시간이 더 걸린다.(비교 횟수 증가)
+
+
+# TreeSet
+
+생성자.
+
+TreeSet()						기본생성자. (기본 comparator을 사용한다)
+TreeSet(Collection c)			주어진 컬렉션을 저장하는 TreeSet을 생성.
+TreeSet(Comparator comp)		주어진 정렬기준으로 정렬하는 TreeSet을 생성.
+
+메소드.
+
+Object first()						정렬된 순서에 첫 번째 객체를 반환한다.
+Object last()						정렬된 순서에서 마지막 객체를 반환한다.
+Object ceiling(Object o)			지정된 객체와 같은 객체를 반환, 없으면 큰 값을 가진 객체 중 가장 가까운 값.
+Object floor(Object o)				지정된 객체와 같은 객체를 반환, 없으면 작은 값을 가진 객체 중 가장 가까운 값.
+Object higher(Object o)				지정된 객체보다 큰 값을 가진 객체 중 제일 가까운 값.
+Object lower(Object o)				지정된 객체보다 작은 값을 가진 객체 중 제일 가까운 값.
+subSet(Object from, Object to)		from에서 to까지의 결과를 반환한다.			(from <= x < to)
+headSet(Object to)					to보다 작은값들을 반환한다.            	(x < to)
+tailSet(Object from)				from보다 같거나큰값을 반환한다.			(from <= x)
+
+
+# TreeSet 정렬이 진행되는 기준.
+
+1. 객체가 comparable 인터페이스를 가지고 있어야된다.
+2. TreeSet이 어떤 정렬기준을 가지고 있어야한다.
+
+둘 중 하나의 조건은 만족해야 TreeSet이 Exception없이 진행 가능하다.
+기본형의 참조변수는 모두 comparable 인스턴스를 가지고 있다.
+
+
+# 트리순회 tree traversal.
+
+트리순회		이진트리의 모든 노드를 한 번씩 읽는 것을 트리순회라고 한다.
+
+전위순회	PreOrder			부모를 먼저 읽는 순회방법.
+후위순회	PostOrder			부모를 나중에 읽는 순회방법.
+중위순회	InOrder				두 자식 사이에 부모를 넣어서 순회하는 것을 말한다. (오름차순 정렬방법)
+레벨순회	LevelOrder			지그재그로 돌아다니면서 순서대로 순회하는 것을 말한다.
+
+
+
+
+
