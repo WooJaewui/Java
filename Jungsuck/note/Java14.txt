@@ -1,0 +1,303 @@
+# HashMap과 HashTable class.
+
+Map인터페이스를 구현. 데이터를 키와 값의 쌍으로 저장한다.
+순차적이지 않다. key는 중복이 안되고, 값은 중복이 가능하다.
+
+HashTable	동기화되어있다.
+			HashMap의 구버전이다.
+			
+HashMap		동기화되어있지않다.
+			LinkedHashMap을 통해 순서를 가질 수 있다.
+			해싱기법으로 만들어져있다. (데이터가 많아도 검색이 빠르다)
+
+TreeMap		TreeSet처럼 이진탐색트리로 만들어져있다.
+			범위 검색과 정렬에 유리하다.
+			HashMap보다 데이터 추가/삭제에 시간이 더 걸림.
+			
+
+# HashMap class
+
+HashMap		해싱(hashing)기법으로 데이터를 저장한다. (데이터가 많아도 검색이 빠르다)
+			Map인터페이스를 구현. 데이터를 키와 값의 쌍(entry)으로 저장.
+			순차적이지 않다.
+
+Key			컬렉션 내의 키중에서 유일해야 한다.
+			똑같은 key로 다른 value을 저장하면 나중에 저장한 value로 바뀐다.
+Value		키와 달리 데이터의 중복을 허용한다.
+
+Entry[] 		HashMap안에 있는 Key와 Value값을 받아서 저장하는 배열이다.
+hash function	input에 어떤 key값을 넣으면, output으로 저장된 위치를 알려준다.
+hashing			hash function을 이용해서 data를 저장하고 읽어온다. 
+
+
+# hashing.
+
+hashing의 원리		key를 통해 해시코드를 얻는데 그 해시코드는 배열의 주소이다.
+					그 배열에서 key값을 찾아서 확인해야된다.
+					Objects.hash()를 통해 hash function을 오버라이딩 할 수 있다. 
+
+해시테이블				링크드리스트로 정리해놓은 data를 배열로 정리해 놓은 것이다.
+					배열과 링크드리스트가 조합된 형태이다.
+					배열의 장점인 접근성과 링크드리스크의 장점 변경의 유리한점을 합쳐서 만들었다.
+
+해시테이블에 저장된 테이터를 가져오는 과정.
+
+1. key를 hash function에 넣는다.
+2. hash function이 output으로 hash code를 반환한다.
+3. hash code는 배열을 주소를 반환한다.
+4. 배열안에 있는 linkedList된 data중에 key에 맞는 data를 찾는다.
+
+hash code는 같을 수 있다. (같은 배열안에 있는 value이란 뜻)
+
+
+# HashMap
+
+생성자
+
+HashMap()											기본생성자.
+HashMap(int initialCapacity)						배열의 초기용량지정.
+HashMap(int initialCapacity, float loadFactor)		배열초기용량 및 어느정도 찼을때 양을 늘릴지 결정.
+HashMap(Map m)										다른 맵을 넣을 수 있다.
+
+메소드
+
+Object put(Object key, Object value)
+void putAll(Map m)
+Object remove (Object key)
+Object replace(Object key, Object value)
+boolean replace(Object key, Object OldValue, Object newValue)	
+
+Set entrySet()						
+Set keySet()						
+Collection values()
+
+Object get(Object key)										
+Object getOrDefault(Object key, Object defaultValue)		기본값설정.
+boolean containsKey(Object key)
+boolean containsValue(Object value)
+
+int size();
+boolean isEmpty();
+void clear();
+Object clone();
+
+
+# Map.Entry
+
+Entry는 Map의 내부 인터페이스이다.
+
+Map.Entry entry = (Map.Entry)object();
+
+
+Entry의 메소드
+
+getKey()
+getValue()
+
+등의 메소드를 사용할 수 있다.
+
+ 
+# Collections 클래스.
+
+Collections 	Colleciton을 다루기 위한 Static 메소드를 제공한다. ex) Object - 객체, Arrays - 배열.
+
+메소드.
+
+fill()
+copy()
+sort()
+binarySearch()
+
+synchronizedXXX()					동기화와 관련된 메소드.
+
+ex) List synList = Collection.synchronizedList(new ArrayList(..));
+
+unmodifiableXXX()					변경불가(readOnly) 컬렉션 만들기. (상수취급)
+
+singletonXXX()						객체 1개만 저장하는 컬렉션 만들기.
+
+checkedXXX(list, String.class)		한 종류의 객체만 저장하는 컬렉션 만들기. (JDK 1.5이전 => 이후에 지네릭스이 나옴)
+
+
+# 컬렉션 클래스 정리 요약.
+
+ArrayList(Vector)		배열을 기반으로 만들어진 class이다.
+						배열은 Stack을 구현한다.
+						추가/삭제가 불리하다.
+						
+LinkedList				연결기반으로 만들어진 class이다.
+						LinkedList는 Queue을 구현한다.
+						데이터 접근성이 떨어진다.
+
+HashMap(HashTable)		배열과, LinkedList를 섞어놓은 HashTable의 형태를 갖는다.
+						
+TreeMap					이진탐색트리구조로 구성되어있다.
+						범위검색, 정렬기능이 좋다.
+						
+HashSet					HashMap의 key부분만 가지고 만들어진 것이다.			
+						순서 X, 중복 X.
+
+TreeSet					TreeMap의 key부분만 가지고 만들어진 것이다.
+						순서 X, 중복 X.
+						
+Properties				key와 value을 String으로만 저장하는 방식. (Java의 정석 3판)
+						HashMap의 방식과 같다. 
+						파일의 읽기와 쓰기가 용이하다.
+
+
+# 지네릭스 Generics.
+
+Generics	컴파일시 타입을 체크해 주는 기능이다. compile-time type check(JDK 1.5)
+			객체의 타입 안정성을 높이고 형변환의 번거로움을 줄여주었다. (코드가 간결해진다)
+			
+ex) ArrayList list = new ArrayList();		
+	String str = (String)list.get();		
+	객체를 형변환 할때 오류가 발생할 수 있다. (ClassCastException = 형변환을 실수 했을때 발생하는 예외)
+
+	ArrayList<String> list = new ArrayList<String>();
+	String str = list.get();				
+	Generics를 통해 오류가 발생하지 않는다.
+	
+
+# RuntimeException에 대한 고민해야 될 부분.
+
+지네릭스같은 방법을 통해 Exception이 최대한 실행전에 알아낼 수 있도록 해야된다. (RuntimeError => CompileError)
+
+ex) String str = null;    	X  (NullPointException 발생)
+	String str = "";	  	O
+
+	Object[] arr = null;	X (NullpointException 발생)
+	Object[] arr = {};		O 
+
+
+# 타입변수.
+
+타입변수		지네릭스 클래스를 작성할때, Object타입 대신 타입변수(E)를 선언해서 사용한다.
+			Object를 포함한 클래스들은 거의 모두 지네릭클래스로 바뀌었다.
+			class의 멤버들의 Object를 E로 바꾼다.
+			일반클래스 Object타입 => 지네릭스클래스 E.
+			
+E			element의 e를 따서 타입변수를 의미하게되었다.
+
+
+# 타입변수에 대입하기.
+
+객체를 생성시, 타입변수(E) 대신 실제 타입을 지정(대입).
+참조변수와 생성자의 타입변수는 일치해야된다.
+
+ex) ArrayList<Tv> tvList = new ArrayList<Tv>();
+	
+	ArrayList에 Tv인스턴스만 넣을 수 있다.
+
+
+# 지네릭스 관련 용어.
+
+Box<t>			지네릭 클래스. T의 Box 또는 T Box라고 읽는다.
+T				타입변수, 타입 매개변수 (T는 타입 문자)
+Box				원시타입 raw type (일반클래스)
+t에 대입된타입		대입된타입, 매개변수화된 타입 (parameterized type)
+				
+
+# 지네릭 타입과 다형성.
+
+생성자의 대입된타입과 참조변수에 대입된타입은 일치해야된다. (상속관계여도 안된다)
+지네릭 클래스간의 다형성은 성립한다. (여전히 대립된 타입은 일치해야된다)
+대입된 타입의 자식인스턴스들을 매개변수로 대입할 수 있다. (다형성)
+
+ex) ArrayList<Product> list = new ArrayList<Product>();
+	
+	list.add(new Product);				가능.
+	list.add(new Tv);					가능. (다형성)
+	
+	Tv t = (Tv)list.get(1);				Product type으로 대입했기때문에 형변환을 해줘야된다.	
+	Product p = list.get(0);			Prodcut 인스턴스는 형변환없이 바로 대입가능.
+	
+
+# Iterator<E>
+
+기존		Iterator it = new Iterator();
+		Student s = (Student)it.next();
+
+
+지네릭	Iterator<Student> it = new Iterator<Student>();
+		Student s = it.next();
+
+
+# HashMap <K,V>
+
+여러개의 타입변수가 필요한 경우, 콤마(,)를 구분자로 선언한다.
+key, value의 type을 구분하기 위해 2개의 타입변수를 사용한다.
+
+
+# 제한된 지네릭 클래스.
+
+<T extends Fruit>		Fruit에 자손들만 지네릭 변수타입의 매개변수로 받을 수 있다. (Fruit 포함)
+						인터페이스인 경우에도 extends를 사용한다. (implements가 아니다)
+						class에서 정의하는 것이다.
+
+
+# 지네릭스의 제약.
+
+타입변수의 대입은 인스턴스 별로 다르게 가능하다.
+static 멤버에 타입변수 사용 불가.
+타입변수로 객체생성이나, 배열생성을 할 수 없다. (타입변수는 미지의 값이기 때문에 생성이 불가능하다)
+ex) new T 		 	(X)
+	T[] itemARR; 	(O)
+
+
+# 와일드카드 <?>
+
+와일드카드				하나의 참조변수로 대입된 타입이 다른 객체를 참조 가능.
+					메소드의 매개변수에 와일드 카드를 사용한다.
+
+<? extends T>		와일드 카드의 상한제한. T와 그 자손들만 가능.
+<? super T>			와일드 카드의 하한제한. T와 그 조상만만 가능.
+<?>					제한 없음. 모든 타입이 가능. <? extends Object>와 동일. 
+
+
+# 지네릭 메소드.
+
+지네릭 타입이 선언된 메소드(타입변수는 메소드 내에서만 유효하다)
+클래스 타입과 지네릭 타입이 같을때 메소드에서는 메소드 지네릭타입을 따른다.
+메소드를 호출할 때마다 타입을 대입해야된다. (대부분 생략 가능 - class와 일치하는 경우가 많아서)
+메소드를 호출할 때 타입을 생략하지 않을때는 클래스 이름 생략불가.
+
+ex) Juicer.<fruit>makeJuice(fruitBox);			지네릭 메소드 makeJuice 앞에 <fruit>를 넣어준다.
+												<fruit> 지네릭 타입을 기입하면 Juicer class 생략불가.
+
+
+# 지네릭 메소드와 인스턴스의 와일드카드 사용의 차이.
+
+지네릭메소드		지네릭 메소드는 지네릭 메소드내에서 사용하는 타입변수이다.
+				메소드를 사용할때마다 다른 타입변수를 사용하기 위해서 사용한다. 
+				대부분 class의 타입이랑 같기 때문에 생략가능하다.
+				와일드카드를 쓸 수 없을때 지네릭메소드를 사용한다.
+
+클래스와일드카드		하나의 타입변수로 연관된 여러객체를 다루기위해 사용하는 것이다.
+				
+
+# 지네릭 타입의 형변환.
+
+Generics	지네릭 타입과 원시 타입간의 형변환은 바람직하지 않다.(가능은 하지만 경고발생)
+			와일드 카드가 사용된 지네릭 타입으로는 형변환 가능.
+			
+ex) Box<? extends Object> box = (Box<? extends Object>)new Box<String>();	형변환가능.
+
+
+# 지네릭 타입의 제거.
+
+컴파일러는 지네릭 타입을 제거하고, 필요한 곳에 형변환을 넣는다.
+
+ex) class Box<T exteds Fruit>{} => class Box {void add(Fruit t)} 로 바꿔준다.
+
+지네릭 타입 제거 후에 타입이 불일치하면, 컴파일러가 형변환을 추가해준다.
+
+return list.get(i);    => return (Fruit)list.get(i);
+
+와일드 카드가 포함된 경우, 컴파일러가 적절한 타입으로 형변환 추가해준다.
+
+
+
+
+
+
