@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 
 public class test2 {
-
+	
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		ArrayList list2 = new ArrayList();
