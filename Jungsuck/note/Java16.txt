@@ -1,0 +1,282 @@
+# 데몬쓰레드
+
+daemon thread		일반쓰레드의 작업을 돕는 보조적인 역할을 수행.
+					일반쓰레드가 모두 종료되면 자동적으로 종료된다.
+					가비지 컬렉터, 자동저장, 화면 자동갱신 등에 사용된다.
+					무한루프와 조건문을 이용해서 실행 후 대기하다가 
+					특정조건이 만족되면 작업을 수행하고 다시 대기하도록 작성한다.
+					
+메소드
+
+boolean isDaemon()				쓰레드가 daemon Thread인지 확인한다. 맞으면 true.
+void setDaemon(boolean on)		쓰레드를 데몬 쓰레드로 또는 사용자 쓰레드로 변경한다.
+								start()를 호출하기 전에 실행되어야 한다. (IllegalThreadStateException 발생)
+								
+
+# 쓰레드의 상태.
+
+NEW							Thread가 생성되고 아직 start()가 호출되지 않은 상태.
+RUNNABLE					실행중 또는 실행 가능한 상태. (줄서기)
+BLOCKED						동기화블럭에 의해서 일시정지된 상태. (lock이 풀릴 때까지 기다리는 상태)
+WAITING, TIMED_WAITING		Thread의 작업이 종료되지는 않았지만 실행가능하지 않은 일시정지상태.
+TERMINATED					Thread의 작업이 종료된 상태.	stop() or 작업이 끝남.						
+	
+
+# 쓰레드의 실행제어.
+
+쓰레드의 실행을 제어할 수 있는 메소드가 제공된다.
+
+메소드.
+
+static void sleep(long millis)		지정된시간(천분의 일초 단위)동안 쓰레드를 일시정지시킨다. 
+									지정한 시간이 지나고나면 실행대기상태가된다.
+									자기자신에게만 호출.
+void join()							다른쓰레드를 기다리기.
+void interrupt()					쓰레드를 깨워서 실행대기상태로 만든다.
+void stop()							종료시킨다.
+void suspend()						일시정지시킨다.
+void resume()						재개시킨다.
+static void yield()					다른 쓰레드에게 양보한다. 자기자신에게만 호출.
+
+
+# sleep()
+
+Thred.sleep(long millis)	현재 thread를 지정된 시간동안 멈추게(잠자게)한다.
+							static method라서 본인 thread에만 적용이 가능하다.
+							헷갈리지 않게, Thread class를 sleep 앞에 표시해준다.
+							시간을 1000분의 1초로 적용이 가능하다. ex) 3*1000 = 3초
+							예외처리를 해야된다. (InterruptedException이 발생하면 깨어남)
+						
+sleep이 끝나는 경우 2가지.
+
+1. time up		시간이끝남.
+2. interrupt	깨우는것.
+
+delay(15);			sleep() + 예외처리한 메소드.
+
+
+# interrupt()
+
+void interrupt()				실행대기상태 (RUNNABLE)인 thread를 대기상태(WAITING)로 만든다.
+					
+boolean isInterrupted()			쓰레드의 interrupted상태를 반환. (true = WAITING상태)
+static boolean interrupted()	현재 쓰레드의 interrupted상태를 알려주고, false로 초기화. (RUNNABLE)
+								static => Thread.interrupted()
+
+
+# suspend()
+
+void suspend()			thread를 일시정지 시킨다. (deprecated 되었다)
+						오버라이딩 해서 사용한다.
+boolean suspended()		일시정지 상태 확인.
+
+
+# resume()
+
+void resume()			suspend()에 의해 일시정지된 thread를 실행대기상태로 만든다. (deprecated 되었다)
+						오버라이딩 해서 사용한다.
+						
+
+# stop()
+
+void stop()				thread를 즉시 종료시킨다. (deprecated 되었다)
+						오버라이딩 해서 사용한다.
+						
+boolean stopped()		정지 상태를 확인.
+
+
+# dead-lock
+
+교착상태. 서로 다른 thread가 필요한 data를 가지고 있어서 작업이 진행이 안되는 상태.
+
+
+# volatile.
+
+volatile 		복사본을 사용하지 않는다. (원본을 읽어온다 - cache나 레지스터의 data를 사용하지 않는다)
+				제어자중 하나인데, 쉽게 바뀌는 변수이다. (Java의 정석 3판에서 나온다)
+
+
+# join()
+
+void join()					지정된 시간동안 특정 쓰레드가 작업하는 것을 기다린다.
+void join(long millis)		예외처리를 해야된다.
+
+
+# yield()
+
+static void yield()			남은 시간을 다음 thread에게 양보하고, 자신은 실행대기한다.
+							static => 자기자신에게만 사용가능. ex) Thread.yield()
+
+busy-waiting상태일때 사용한다. (waiting상태지만 무언가 실행(반복문)되고 있는 경우)
+yield()와 interrupt()를 적절히 사용하면, 응답성과 효율을 높일 수 있다.
+OS 스케쥴러에게 양보한다는 정보를 알려주는것이라 무조건 양보되는 것은 아니다. 
+
+
+# 쓰레드의 동기화 synchronization.
+
+synchronization		멀티쓰레드 프로세스에서는 다른 쓰레드의 작업에 영향을 미칠 수 있다.
+					진행중인 작업이 다른 쓰레드에게 간섭받지 않게 하려면 '동기화'가 필요.
+					동기화하려면 간섭받지 않아야 하는 문장들을 '임계영역'으로 설정한다.
+					한번에 한개의 쓰레드에서만 사용가능하다.
+					임계영역은 범위가 적을수록 좋다. (효율 문제)
+					
+					
+critical section	임계영역이다.
+					임계영역은 락(lock)을 얻은 단 하나의 쓰레드만 출입가능(객체 1개에 락 1개)
+					
+
+# synchronized를 이용한 동기화			
+
+임계영역(lock이 걸리는 영역)을 설정하는 방법 2가지.
+
+1. 메소드 전체를 임계 영역으로 지정.
+
+ex) public synchronized void method(){...}
+
+
+2. 특정한 영역을 critical section으로 지정.
+
+ex) synchronized(객체의 참조변수){...}
+
+
+# wait()와 notify()
+
+동기화의 효율을 높이기 위해 메소드들을 만들었다.
+Object 클래스에 정의되어 있다. 동기화 블럭 내에서만 사용할 수 있다.
+
+wait()			더 이상 진행이 안될때 Lock을 반납하고 waiting pool에서 기다린다.
+
+notify()		진행이 되게 만들어주는 문장을 실행하고,
+				waiting pool에서 대기중인 쓰레드 중 하나에게 알린다.
+notifyAll()		진행이 되게 만들어주는 문장을 실행하고,
+				waiting pool에서 대기중인 모든 쓰레드를 깨운다. (일반적으로 모두에게 알리는 것이 좋다)
+
+
+# Lock()와 condition()
+
+wait()와 notify()의 구분이 안되는 단점을 보완해서 나온 것이다. (자세한 내용은 Java 3판에서 나옴)
+
+
+# 함수와 메소드의 차이.
+
+근본적으로 동일하다. 함수는 일반적 용어, 메소드는 객체지향개념 용어.
+함수는 클래스에 독립적, 메소드는 클래스에 종속적.
+
+
+# 람다식 Lambda Expression
+
+Lambda		함수(메소드)를 간단한 'expression'으로 표현하는 방법.
+			익명함수이다. 
+			
+ex) int max(int a, int b){ return a > b ? a:b; }
+	=> (a, b) -> a > b ? a : b
+	
+
+# 람다식 작성하기.
+
+1. 메소드의 이름과 반환타입을 제거하고 '->'를 블록{ } 앞에 추가한다.
+
+ex) (int a, int b) -> { return a > b ? a : b; }
+
+
+2. 반환값이 있는 경우, 식이나 값만 적고 return문 생략 가능. (끝에 ';' 안 붙임)
+
+ex) (int a, int b) -> a > b ? a : b 
+
+
+3. 매개변수의 타입이 추론 가능하면 생략가능 (대부분의 경우 생략가능)
+
+ex) (a, b) -> a > b ? a : b
+
+
+# 람다식 주의사항.
+
+1. 매개변수가 하나인 경우, 괄호 ( ) 생략가능. (타입이 없을 때만)
+2. 블록 안의 문장이 하나뿐 일 때, 괄호 { } 생략가능 (끝에 ';' 안 붙임)
+3. 람다식은 익명 함수가 아니라 익명객체이다. (익명객체에 메소드를 실행 하는 것이다 라고 생각하자)
+
+
+# 함수형 인터페이스.
+
+Function 	단 하나의 추상 메소드만 선언된 인터페이스.
+
+ex) @FunctionalInterface
+	interface MyFunction{
+		public abstract int max(int a, int b);
+	}
+
+	MyFunction f = new MyFunction (){ 멤버 }
+	
+	조상은 클래스, 인터페이스 둘다 된다.
+	
+
+# java.util.function 패키지.
+
+자주 사용되는 다양한 함수형 인터페이스를 제공한다.
+
+Runnable		void run()				매개변수 없고, 반환값 없음.
+Supplier<T>		T get()					매개변수 없고, 반환값 있음.
+Consumer<T>		void accept(T t)		매개변수 있고, 반환값 없음.
+Function<T.R>	R apllay(T t)			일반적임 함수. 하나의 매개변수를 받아서 결과를 반환.
+Predicate<T>	boolean test(T t)		조건식을 표현하는데 사용됨.
+										반환값이 boolean이여야된다. (true || false)
+
+매개변수가 2개인 함수형 인터페이스.
+
+BiConsumer<T,U>		void accept(T t, U u)		두개의 매개변수만 있고, 반환값이 없음.
+BiPredicate<T,U>	boolean test(T t, U u)		조건식을 표현하는데 사용됨. 매개변수는 둘, 반환값은 boolean.
+BiFunction<T,U,R>	R applay(T t, U u)			두 개의 매개변수를 받아서 하나의 결과를 반환.
+
+Function은 반환을 0~1개만가능하다. 그래서 Supplier가 없다.
+3개 이상부터는 만들어서 사용해야된다.
+
+
+매개변수의 타입과 반환타입이 일치하는 함수형 인터페이스.
+
+UnaryOperator<T>		T apply(T t)			Function의 자손. Function과 달리 매개변수와 결과의 타입이 같다.
+BinaryOperator<T>		T apply(T t, T t)		BiFunction의 자손. BiFunction과 달리 매개변수와 결과의 타입이 같다.
+
+
+# Predicate의 결합.
+
+and(), or(), negate()로 두 Predicate를 하나로 결합 (default 메소드)
+
+ex) Predicate<Integer> p = i -> i <100;
+	Predicate<Integer> p2 = i -> i > 200;
+	
+	합치기.
+	
+	Predicate<Integer> notP = p.negate()          		 i >= 100
+	
+isEqual()로 두 수 비교하기.
+	
+ex) boolean result = Predicate.isEqual(str1).test(str2);
+
+
+# andThen.
+
+하나의 함수가 끝나고 바로 다음 함수를 시작해라. (여러 함수를 이어서 할 수 있다)
+
+Function<String, String> h = f1.andThen(f2);		f1의 반환값의 타입과 f2의 입력 타입이 같아야 사용가능하다.
+
+
+# 컬렉션프레임웍과 함수형 인터페이스.
+
+Collection		boolean reoveif(Predicate<E> filter)			조건에 맞는 요소를 삭제.
+
+List			void replaceAll(UnaryOperator<E> operator)		모든 요소를 변환하여 대체.
+
+iterable		void forEach(Consumer<T> action)				모든 요소에 작업 action을 수행.
+
+Map				V compute(key, BiFunction<K,V,V> f)				지정된 키의 값에 작업 f를 수행.
+				V computeIFAbsent(key, Function<K,V> f)			키가 없으면, 작업 f 수행 후 추가.
+				V computeIfPresent(key, BiFunction<K,V,V> f)	지정된 키가 있을 때, 작업 f 수행.
+				V merge(key, Value, BiFunction<V,V,V> f)		모든 요소에 병합작업 f를 수행.
+				void forEach(BiConsumer<K,V> action)			모든 요소에 작업 action을 수행.
+				void replaceAll(BiFunction<K,V,V> f)			모든 요소에 치환작업 f를 수행.
+				
+				
+				
+				
+				
+				
