@@ -1,0 +1,213 @@
+# Stream의 중간연산.
+
+Stream<T> distinct()								중복을제거.
+
+Stream<T> filter(Predicate<t> predicate)			조건에 안 맞는 요소 제외.
+
+Stream<T> limit(long maxSize)						스트림의 일부를 잘라낸다.
+
+Stream<T> skip(long n)								스트림의 일부를 건너뛴다.
+
+Stream<T> peek(Cunsumer<t> action)					스트림의 요소에 작업수행.
+
+Stream<T> sorted()									스트림의 요소를 정렬한다. (기본정렬)
+Stream<T> sorted(Comparator<T> comparator)			스트림의 요소를 정렬한다. (정렬방법을 매개변수로 넣는다)
+
+map(Function<T,R> mapper)							스트림의 요소를 변환한다.
+
+flatMap(Function<t,Stream<r>> mapper)				스트림의 요소를 변환한다.
+
+
+# Stream의 최종연산.
+
+void forEach(Consumer<? super T> action)				각 요소에 지정된 작업 수행.
+void forEachOrdered(Consumer<? super T> action)			병렬스트림일때, 순서를 유지한다.
+
+long count()											스트림의 요소의 개수 반환.
+
+Optional<T> max(Comparator<? super T> comparator)		스트림의 최대값을 반환.
+Optional<T> min(Comparator<? super T> comparator)		스트림의 최소값을 반환.
+
+Optional<T> findAny()									스트림의 요소 아무거나 하나를 반환.
+Optional<T> findFirst()									스트림의 첫 번째 요소 하나를 반환.
+
+boolean allMatch(Predicate<T> p)						주어진 조건을 모든 요소가 만족하는지.
+boolean anyMatch(Predicate<T> p)						주어진 조건을 하나라도 만족하는지.
+boolean noneMatch(Predicate<t> p)						주어진 조건을 모두 만족하지 않는지.
+
+Object[] toArray()										스트림의 모든 요소를 배열로 반환.
+A[]	toArray(IntFunction<A[]> generator)					
+
+Optional<T> reduce(BinaryOperator<T> accumulator)		스트림의 요소를 하나씩 줄여가면서 계산한다.
+T reduce(T identity, BinaryOperator<T> accumulator)
+U reduce(U identity, BiFunction<U,T,U> accumulator, combiner)
+
+R collect(Collector<T,A,R> collector)					Reduce를 이용해서 그룹작업을 하는 것이다.
+
+
+
+# Stream의 중간연산.
+
+skip(long n)					앞에서부터 n개 건너띄기.			
+
+limit(long maxSize)				maxSize 이후의 요소른 잘라냄.
+
+filter(Predicate 조건식)			조건에 맞지 않는 요소 제거.
+
+distinct()						중복제거.
+
+sorted()						스트림 요소의 기본정렬 Comparable로 정렬.
+
+sorted(Comparator)				Comparator의 정렬 방식으로 스트림 요소를 정렬한다.
+								String.CASE_INSENSITIVE_ORDER 	대소문자 구분안함.
+
+thenComparing(Comparator)		추가적인 정렬 기준을 제공할 때 사용한다.
+
+
+# Stream의 중간연산2. (조금 어려운 것들)
+
+map(Function)							Stream<T> -> Stream<R>로 변환된다.
+
+ex) fileSteam.map(File::getName)        Stream<File> -> Stream<String>
+
+peek(Consumer action)					forEach와 같은 역할을 하지만, 중간연산이라서 Stream을 반환한다.
+										(중간결과 확인할때 사용한다 - 디버깅)
+
+flatMap()								스트림의 스트림을 스트림으로 변환할때 사용한다.
+
+ex) Stream<String[]> strArrStream = Stream.of(new String[]{"abc"})
+	= Stream<Stream<String>>
+	=> Stream<String> str = strArrStream.flatMap(Arrays::stream); 	
+
+
+# Optional<T> class.
+
+Optional<T>			T 타입 객체의 래퍼클래스.
+					
+Optional<T>의 필요성.
+
+1. null을 직접 다루는 것은 위험하다. (NullPointException) => 간접적으로 null 다루기.
+2. null 체크하려면 if문 필수 => 코드가 지저분해진다.
+
+=> 참조변수 => Optional 인스턴스 => 실제값.
+
+
+# Optional<T> 객체 생성하기.
+
+String str = "abc";
+Optional<String> optVal = Optional.of(str);
+Optional<String> optVal = Optional.of("abc");
+Optional<String> optVal = ofNullable("abc");
+Optional<String> optVal = Optinal.empty();
+
+NullPointException을 줄이기 위해 사용하는 것이다.
+
+
+# Optinal<T> 객체의 값 가져오기.
+
+메소드
+
+get()					optVal에 저장된 값을 반환. null이면 예외발생.
+
+orElse()				optVal에 저장된 길이 null일 때는, ""를 반환.
+	
+orElseGet()				람다식 사용가능 () -> new String()
+
+orElseThrow()			예외종류 지정가능. null이면 예외발생. 
+
+istPresent()			Optional 값이 null이면 false, 아니면 true를 반환.
+
+ifPresent()				null이 아닐때만 작업을 수행한다. null이면 아무 일도 안함.
+
+
+# OptionalInt, OptionalLong, OptionalDouble.
+
+기본형 값을 감싸는 래퍼클래스. 
+Optional<T>보다 더 좋은 성능이 필요할때 사용한다.
+
+OptionalInt 			getAsInt()
+OptionalLong			getAsLong()
+OptionalDouble			getAsDouble()
+
+
+# Stream의 최종연산.
+
+forEach()							병렬	Stream인 경우 순서가 보장되지 않음.
+
+forEachOrdered()					병렬 Stream인 경우에도 순서가 보장됨.
+
+allMatch(조건식)						모든 요소가 조건을 만족시키면 true.
+
+anyMatch(조건식)						요소가 하나라도 조건을 만족시키면 true.
+
+nuneMatch(조건식)						모든 요소가 조건을 불만족시키면 true.
+
+fineFirst()							filter()조건에 맞는 첫 번째 요소를 반환. 순차 Stream에 사용.
+									ex) Stream.filter(조건).findFirst()
+
+findAny()							filter()조건에 맞는 아무거나 하나를 반환. 병렬 Stream에 사용.
+									ex) Stream.filter(조건).findAny()
+
+reduce(identity, accumulator)		Stream의 요소를 하나씩 줄여가며 누적연산(accumulate) 수행. 
+									identity = 초기값, accumulate = 이전 연산결과와 스트림 요소에 수행할 연산.
+									ex) Stream.reduce(0, (a,b) -> a+b) 
+									a = 초기값 또는 이전값, b = stream의 요소값.
+
+collect(Collector)					그룹별 reduce가 가능하다. (reduce와 역할은 같다)
+									
+
+
+# Collector interface.
+
+Collector<T,A,R>					T(요소)를 A에 누적한 다음, 결과를 R로 변환해서 반환한다.
+									supplier = 저장할 곳, accumulator = 누적방법, finisher = 최종반환.
+
+Collector의 메소드들을 구현해야 사용가능하지만, Collectors class가 구현을 해 놓았다.
+									
+									
+# Collectors class.
+
+Collector interface를 오버라이딩해서 다양한 메소드들을 가지고 있는 class이다.
+
+Collector의 역할.
+
+1. Stream을 Collection로 변환.
+
+ex) Stream.collect(Collectors.toList(ArrayList::new));				List -> value만 저장.
+	Stream.collect(Collectors.toMap(p->p.getRegId(), p->p));		map -> key와 value를 저장.
+	
+2. Stream을 Array로 변환.
+
+ex) Student[] stu = Stream.toArray(Student[]::new);
+
+3. Stream의 통계정보 제공.
+
+ex) stream.collect(count());
+	stream.collect(sumingInt(Student::getTotalScore));
+	stream.max(Comparator.comparingInt(Student::getTotalScore));
+
+4. reducing()
+
+ex) stream.collect(reducing(Integer::max));
+	
+5. joining()
+
+ex) stream.collect(joining(","));
+
+
+# Stream의 그룹화와 분할.
+
+
+1. partitioningBy()을 통해 Stream 요소를 2분할한다.
+
+Map<boolean, List<Student> str = Stream.collect(partitioningBy(Student::isMale, Collectors.counting()));
+
+true = 남학생, false = 여학생 		true와 false를 key값으로 갖고, value는 분할규칙에 따라 나눠진다.
+
+
+2. groupingBy()을 통해 Stream 요소를 n분할한다.
+
+Map<Integer, List<Student> str = Stream.collect(groupingBy(Student::getBan, toList()));
+
+
+
