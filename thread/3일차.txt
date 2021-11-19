@@ -1,0 +1,24 @@
+
+ 3일차 - 6강.
+
+
+
+ # 보조 쓰레드로 print 메소드 호출하기.
+
+Thread 클래스.
+새로운 흐름을 생성해주는 클래스이다.
+
+Runnable 인터페이스.
+run( ) 메소드안에 코드를 오버라이드해서 작성하면 새로운 쓰레드에서 실행된다.
+
+Thread 클래스 사용.
+Thread th1 = new Thread( new Runnable( ) { 
+	@Override
+	public void run( ) { 
+		실행할 내용 ;
+	}
+} ) ;
+
+주의사항.
+매번 실행될때마다 조금씩 다른 순서대로 실행된다.
+
