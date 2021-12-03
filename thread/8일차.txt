@@ -1,0 +1,32 @@
+
+ 8일차 - 12강.
+
+
+
+ # 쓰레드 그룹 이용하기.
+
+설명.
+수십개 이상의 쓰레드들을 동시에 멈추기 하기 위한 방법으로 그룹을 만드는 것이 있다.
+
+그룹 생성.
+ThreadGroup threadGroup = new ThreadGroup( "그룹이름" );
+
+쓰레드에 그룹 지정.
+Thread th1 = new Thread( threadGroup, Runnable ) ;
+
+그룹안에 그룹을 포함할 수 있다.
+ThreadGroup childGroup = new ThreadGroup( "그룹이름" ) ;
+ThreadGroup parrentGroup = new ThreadGroup( childGroup, "그룹이름" ) ;
+
+쓰레드 그룹 메소드.
+threadGroup.list( ) : 쓰레드 그룹에 속한 쓰레드들을 보여줌.
+threadGroup.interrupt( ) : 쓰레드 그룹에 속한 쓰레드들에게 인터럽트를 요청함.
+
+
+
+
+
+
+
+
+
