@@ -1,0 +1,25 @@
+
+ 11일차 - 2부 4~5강
+
+
+
+ # 메소드 동기화의 문제점.
+
+동기화 범위 정하기.
+임계영역을 넓게 잡을수록 성능이 떨어진다.
+
+
+
+ # ReentrantLock.
+
+ReentrantLock.
+tryLock을 통해 Lock이 걸려있을때 코드와, 걸려있지 않았을때 코드를 나누어서 설정할 수 있다.
+
+메소드.
+lock( ) ;
+unolock( ) ;
+tryLock( ) : boolean 값을 반환한다 - Lock이 걸려있지 않으면 true.
+
+
+
+
