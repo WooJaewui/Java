@@ -1,0 +1,23 @@
+
+ 10일차 - 30강.
+
+
+
+ # 파일 객체와 스트림 객체 생성방법과 그 의미.
+
+파일 객체 생성과 사용방법.
+File 변수이름 = new File( "파일경로/파일이름" ) ;
+변수이름( Reference ) 
+
+출력 스트림 생성.
+FileOutputStream fout = new FileOutputStream( 파일변수이름 ) ;
+
+FD File Descriptor.
+특정한 파일에 접근하기 위한 추상적인 키이다. ( 예 : 파일 객체의 변수이름 )
+
+
+
+
+
+
+
