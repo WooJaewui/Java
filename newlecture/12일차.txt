@@ -1,0 +1,57 @@
+
+ 12일차 - 32 - 33강
+
+
+
+ # 파일 출력에 대한 기본 코드와 개념설명.
+
+객체 생성과 사용방법 순서.
+File file = new File( "파일경로" ) ;
+FileOutputStream fout = new FileOutputStream( file ) ;
+fout.write( 출력할 데이터 ) ;
+fout.flush( ) ;
+fout.close( ) ;
+
+추가설명.
+fout.write( )의 갯수나 내용만 달라진다.
+File, Input/OutputStream, flush( ), close( )는 항상 사용된다.
+
+
+
+ # 패키지는 무엇이고 그 이름을 명명하는 방법은?
+
+패키지.
+같은 이름의 클래스를 구분해 줄 수 있다
+
+namespace.
+어떠한 개체를 식별하기 위해 붙이는 이름이나 별칭을 의미.
+
+패키지 사용 예시.
+import 패키지이름.클래스이름 ;
+패키지이름.클래스이름 ;
+
+패키지 이름 중복.
+패키지 이름이 다른사람과 같고, 클래스이름까지 같으면 문제가 발생한다.
+패키지 이름을 도메인 이름으로 사용하면 문제를 해결할 수 있다. ( 도메인은 유일하다 )
+
+패키지 명 예시.
+com.naver.프로젝트이름 ;
+
+단축키.
+ctrl + shift + o : 자동 import.
+
+패키지 활용.
+import java.util.* : java.util에 있는 모든 클래스를 import.
+
+
+
+
+
+
+
+
+
+
+
+
+
