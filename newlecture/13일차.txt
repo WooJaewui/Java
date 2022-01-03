@@ -1,0 +1,21 @@
+
+ 13일차 - 35강.
+
+
+
+ # 파일에 문자 저장하기.
+
+실습.
+public static void main( String[ ] args ) { 
+	File file = new File( "파일경로\\파일이름" ) ;
+	
+	 // 예외처리 해야됨.
+	FileOutputStream fos = new FileOutputStream( file ) ;
+	fos.write( "파일에 적을 내용" ) ;	
+	
+	// 예외처리 해야됨.
+	fos.close( ) ;	
+}
+
+
+
