@@ -1,0 +1,19 @@
+
+ 16일차 - 40강.
+
+
+
+ # 문자열 출력과 그 때 사용하는 기본 객체 PrintStream.
+
+출력.
+OutputStream - write( ), flush( ) : 파일로 출력. ( 실수 출력 불가 )
+PrintStream( ) - print( ), println( ), printf( ) : 문자열을 저장, 숫자를 문자로 바꿔서 저장.
+
+PrintStream 사용법.
+PrintStream fout = new PrintStream( new OutputStream( ) ) ;
+fout.print( 3.45 ) => 3.45로 출력.
+fout.print( "hello" ) => hello로 출력.
+
+
+
+
