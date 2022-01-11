@@ -1,0 +1,43 @@
+
+ 17일차 - 41 ~ 42강.
+
+
+
+ # 문자출력과 숫자 출력에 대한 복습설명.
+
+복습 코드.
+File file = new File( "경로\파일이름" ) ;
+FileOutputStream fos = new FileOutputStream( file ) ;
+char x = '1' ;
+fos.write( x ) ;
+fos.flush( ) ;
+fos.close( ) ;
+System.out.println( "작업완료" ) ;
+
+파일 저장방식.
+binary : 숫자로 저장.
+ASCII : 문자로 저장.
+
+
+
+ # PrintStream 객체를 이용해 문자열 출력해보기.
+
+문자열 출력.
+"Hello"라는 문자열을 출력하는 방식은 "H", "e", "l", ...을 반복해서 출력하는 것이다.
+이 반복은 print( ), println( ), printf( )와 같은 메소드가 해준다. ( PrintStream 객체가 가지고 있다 )
+PrintStream을 생성하기 위해서는 생성자의 매개변수로 버퍼를 넣어준다.
+
+PrintStream 예시.
+File file = new File( 파일경로\파일이름 ) ;
+FileOutputStream fos = new FileOutputStream( file ) ;
+PrintStream fout = new PrintStream( fos ) ;
+
+fout.print( "Hello" ) ;
+
+fout.close( ) ;
+fos.close( ) ;
+
+
+
+
+
