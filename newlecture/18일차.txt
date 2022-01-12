@@ -1,0 +1,13 @@
+
+ 18일차 - 43강.
+
+
+
+ # 성적을 출력하는 코드 준비하기.
+
+PrintStream( ).
+PrintStream의 print( ), printf( ), println( )은 flush( )를 포함하고 있다.
+
+
+
+
