@@ -1,0 +1,40 @@
+
+ 20일차 - 45 ~ 46강.
+
+
+
+ # 포멧 문자열에 정수를 함께 출력하기.
+
+PrintStream( ).
+문자열을 출력하는 방식이기 때문에 숫자를 넣으면 숫자를 문자로 바꿔서 출력.
+
+예시.
+File file = new File( "경로" ) ;
+FileOutputStream fos = new FileOutputStream( file ) ;
+PrintStream fout = new PrintStream( fos ) ;
+fout.println( 10 ) ;  // "10"을 출력.
+
+printf( ).
+문자형과 숫자 등을 함께 출력할 때 사용.
+
+printf( ) 출력 포맷.
+%d : 숫자.
+%s : 문자.
+
+printf( ) 예시.
+fout.printf( "%d-%d-%d\n" , 2022,01,17 ) ;
+
+
+
+ # 에러메시지를 대하는 방법.
+
+에러 확인하는 법.
+우리가 만든 클래스를 찾아서 오류가 발생한 곳을 확인한다.
+에러의 이름을 확인한다 - 어떤 오류인지 확인.
+
+IllegalFormatConversionException.
+변환이 불가능한 타입을 Conversion해서 발생한 에러.
+
+
+
+
