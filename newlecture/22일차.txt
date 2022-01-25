@@ -1,0 +1,14 @@
+
+ 22일차 - 49강.
+
+
+
+ # 파일 출력을 콘솔 출력으로 바꾸기.
+
+System.out
+standard( 표준 ) output stream으로 콘솔 출력을 의미한다.
+콘솔 출력을 위한 stream 객체는 따로 만들 수 없고 미리 하나의 객체만 만들어져 있다.
+System.out은 close( ) 할 수 없다.
+
+
+
