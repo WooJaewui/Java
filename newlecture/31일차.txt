@@ -1,0 +1,22 @@
+
+ 31일차 - 61강.
+
+
+
+ # 반복문과 if문을 이용하여 파일 복사 프로그램 완성하기.
+
+코드 작성.
+int x ;
+boolean done = false ;
+while( !done ) { 
+	x = srcFis.read( ) ;
+	if( x<0 ) {
+		break ;	
+	}
+	copyFos.write( x ) ;
+}
+
+
+
+
+
