@@ -1,0 +1,18 @@
+
+ 33일차 - 64강.
+
+
+
+ # continue를 이용해 7보다 작은 값만 복사하기.
+
+코드.
+while( true ) { 
+	if( x < 0 ) {
+		break ; 
+	}
+	if( x > 7 ) {
+		continue ;
+	} 
+	System.out.println( x ) ;
+}
+
