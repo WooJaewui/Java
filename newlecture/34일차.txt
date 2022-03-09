@@ -1,0 +1,39 @@
+
+ 34일차 - 64 ~ 65강.
+
+
+
+ # if문을 활용할 수 있는지를 확인하기 위한 예제.
+
+예제 코드.
+while( true ) {
+	a++ ;
+	if( a == null ) { 
+		break ;
+	}
+	System.out.println( a ) ;
+	if( a == space ) { 
+		System.out.println( "\n" ) ;
+		continue ;
+	}
+}
+
+주의사항.
+운영체제마다 \n 등의 명령어에 대한 실행이 조금 다를 수 있다.
+unix \n : 줄바꿈만 실행한다.
+window \n : 띄어쓰기와 줄바꿈을 모두 실행한다.
+
+
+
+ # if else를 이용해 대체 흐름 만들기.
+
+예제 코드.
+if( a == '0 ) { 
+	System.out.println( '?' ) ;
+} else {
+	System.out.println( a ) ; 
+}
+
+
+
+
