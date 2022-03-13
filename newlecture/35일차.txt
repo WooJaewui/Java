@@ -1,0 +1,64 @@
+
+ 35일차 - 66 ~ 69강.
+
+
+
+ # else if를 이용해 특별한 조건 추가하기.
+
+if else문.
+if( 조건 ) { 코드 } else if ( 조건 ) { 코드 } ... else { 코드 } 는 한 문장처럼 사용된다.
+여러 개의 조건을 확인해서 하나만 코드만 실행된다.
+
+
+
+ # 문자열을 읽기 위한 Scanner 사용방법.
+
+Scanner 객체.
+스페이스나 줄바꿈 문자를 구분자로 사용한다.
+inputStream을 매개변수로 받아서 스트림을 통해 읽어온 데이터를 사용한다.
+
+Scanner를 이용한 문자열 읽어오기.
+nextLine( ) : 버퍼에 저장된 내용을 한줄 모두 읽어오기.
+next( ) : 스페이스 단위로 끊어서 문자열로 읽어오기.
+nextInt( ) : 스페이스 단위로 끊어서 문자열로 읽어온 후 정수형으로 형변환하기.
+nextFloat( ) : 스페이스 단위로 끊어서 문자열로 읽어온 후 실수형으로 형변환하기.
+nextDouble( ) : 스페이스 단위로 끊어서 문자열로 읽어온 후 실수형으로 형변환하기.
+
+
+
+ # Scanner를 이용해 문자열 읽기.
+
+코드 예시.
+File file = new File( "파일이름" ) ;
+FileInputStream fis = new FileInputStream( file ) ;
+Scanner sc = new Scanner( fis ) ;
+
+String str1 = sc.nextLine( ) ;
+
+sc.close( ) ;
+fis.close( ) ;
+
+주의사항.
+더이상 읽어올 데이터가 없으면 NoSuchElementException이 발생한다.
+지정한 타입으로 형변환이 불가능한 경우 InputmismatchException이 발생한다.
+
+
+
+ # 파일에서 값들을 읽어서 총 합 구하기.
+
+PrintStream.
+출력 버퍼에 저장된 데이터를 문자열 단위로 출력할 수 있도록 도와주는 객체.
+
+토큰.
+구분자를 통해 나눠진 하나의 요소.
+
+
+
+
+
+
+
+
+
+
+
